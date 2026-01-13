@@ -18,3 +18,6 @@ https://www.figma.com/proto/hAdfd8M11VNT2QLkuhvDRO/AR---VR?node-id=1-2&starting-
 
 # Portfolio
 https://www.figma.com/proto/fI8LqxRhGiaHE4BbsXW79z/Neon-Themed-Interactive-Portfolio--Community-?node-id=22-492&t=5pAxCSIREW13Lpq0-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2
+
+#ZData Technologies – Company Website
+https://www.figma.com/proto/2yX6YRHwQFm76xLdm8sFma/Z-Data?node-id=801-130&t=yFIaMiTkGoIANaOP-1
