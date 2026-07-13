@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="TailorStudio UX/UI Case Study — A premium portfolio case study documenting the complete design process of a full-stack tailoring SaaS platform.">
+<title>TailorStudio — UX/UI Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#06091a;--bg2:#090e1f;--s1:#0f1629;--s2:#141e35;--s3:#1a2644;
+  --br:rgba(255,255,255,0.06);--br2:rgba(255,255,255,0.12);
+  --p:#4F46E5;--pl:#818cf8;--pg:rgba(79,70,229,0.22);
+  --a:#10B981;--al:#34d399;--ag:rgba(16,185,129,0.18);
+  --pu:#8b5cf6;--bl:#3b82f6;--cy:#06b6d4;--go:#f59e0b;--re:#ef4444;
+  --t:#e2e8f0;--t2:#94a3b8;--t3:#64748b;--t4:#475569;
+  --r:14px;--rl:22px;--tr:.35s cubic-bezier(.4,0,.2,1);--tf:.2s cubic-bezier(.4,0,.2,1);
+  --nav-bg:rgba(6,9,26,.88);
+  --grid-dot:rgba(255,255,255,0.035);
+  --orb1:rgba(79,70,229,.16);--orb2:rgba(16,185,129,.11);--orb3:rgba(139,92,246,.09);
+  --cursor-cl:rgba(79,70,229,.055);
+  --shadow-heavy:rgba(0,0,0,.6);
+}
+html[data-theme="light"]{
+  --bg:#f0f4ff;--bg2:#e8eef8;--s1:#ffffff;--s2:#f5f7ff;--s3:#e2e8f4;
+  --br:rgba(79,70,229,0.1);--br2:rgba(79,70,229,0.2);
+  --p:#4F46E5;--pl:#4338ca;--pg:rgba(79,70,229,0.12);
+  --a:#059669;--al:#10B981;--ag:rgba(5,150,105,0.12);
+  --pu:#7c3aed;--bl:#2563eb;--cy:#0891b2;--go:#d97706;--re:#dc2626;
+  --t:#0f172a;--t2:#334155;--t3:#64748b;--t4:#94a3b8;
+  --nav-bg:rgba(240,244,255,.92);
+  --grid-dot:rgba(79,70,229,0.06);
+  --orb1:rgba(79,70,229,.10);--orb2:rgba(16,185,129,.07);--orb3:rgba(139,92,246,.06);
+  --cursor-cl:rgba(79,70,229,.04);
+  --shadow-heavy:rgba(99,102,241,.12);
+}
+/* Global theme transition */
+html{transition:background .4s ease,color .4s ease}
+body,#nav,.sec,.full-sec,.dsblk,.ovc,.percard,.rcard,.msc,.mcc,.mtable,.mtr,.mth,.mni,
+.msb,.mmain,.mhead,.mbody,.lcard,.pc,.rsb,.fcard,.mitem,.jcard,.jsi,.eq,.eitem,
+.wfp,.flowcon,.iacon,.fvis,.fcardhd,.mob-oc,.mob-h,.mob-b,.phone,.pscr,
+.cf,.cbk,.bf,.bc,.dsinp,.dsblk{transition:background .4s ease,border-color .4s ease,color .4s ease,box-shadow .4s ease}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t);line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+/* ── NAV ── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:flex;align-items:center;justify-content:space-between;transition:var(--tr)}
+#nav.s{background:var(--nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--br2);padding:12px 48px}
+
+/* ── THEME TOGGLE (redesigned clean pill) ── */
+.themetoggle{
+  width:60px;height:30px;border-radius:99px;border:1.5px solid var(--br2);
+  background:var(--s3);cursor:pointer;position:relative;flex-shrink:0;
+  transition:background .4s ease,border-color .4s ease;outline:none;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.2);
+}
+.themetoggle:hover{border-color:var(--p)}
+.themetoggle.light{background:linear-gradient(135deg,#c7d2fe,#818cf8);border-color:rgba(79,70,229,.5);box-shadow:0 0 12px rgba(79,70,229,.25)}
+/* Sliding knob – uses a child span not ::after to avoid overflow glitch */
+.tknob{
+  position:absolute;width:22px;height:22px;border-radius:50%;
+  top:3px;left:3px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;line-height:1;
+  transition:transform .4s cubic-bezier(.4,0,.2,1),background .4s,box-shadow .4s;
+  background:var(--t2);box-shadow:0 2px 6px rgba(0,0,0,.35);
+  pointer-events:none;
+}
+.themetoggle.light .tknob{transform:translateX(30px);background:#4F46E5;box-shadow:0 2px 10px rgba(79,70,229,.5)}
+.ticon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity .3s ease,transform .3s ease}
+.ticon.moon{opacity:1;transform:scale(1) rotate(0deg)}
+.ticon.sun{opacity:0;transform:scale(.5) rotate(-90deg)}
+.themetoggle.light .ticon.moon{opacity:0;transform:scale(.5) rotate(90deg)}
+.themetoggle.light .ticon.sun{opacity:1;transform:scale(1) rotate(0deg)}
+.nright{display:flex;align-items:center;gap:12px}
+.nlogo{display:flex;align-items:center;gap:10px}
+.nlm{width:36px;height:36px;background:linear-gradient(135deg,var(--p),var(--pu));border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff}
+.nlt{font-size:15px;font-weight:700}.nls{font-size:11px;color:var(--t3)}
+.nlinks{display:flex;gap:32px;list-style:none}
+.nlinks a{font-size:13px;font-weight:500;color:var(--t2);transition:color var(--tf)}
+.nlinks a:hover{color:var(--t)}
+.ncta{padding:8px 20px;background:var(--p);color:#fff;font-size:13px;font-weight:600;border-radius:8px;transition:var(--tf)}
+.ncta:hover{background:var(--pl);transform:translateY(-1px)}
+
+/* ── PROGRESS BAR ── */
+#pb{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--p),var(--a));z-index:200;width:0;transition:width .1s}
+
+/* ── SECTION BASE ── */
+.sec{padding:110px 48px;max-width:1380px;margin:0 auto}
+.full-sec{padding:110px 0;background:var(--bg2)}
+.full-sec .inner{max-width:1380px;margin:0 auto;padding:0 48px}
+.lbl{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pl);margin-bottom:18px}
+.lbl::before{content:'';display:block;width:22px;height:2px;background:var(--p);border-radius:2px}
+.stitle{font-size:clamp(34px,4vw,56px);font-weight:800;line-height:1.08;letter-spacing:-.03em;margin-bottom:14px}
+.ssub{font-size:17px;color:var(--t2);max-width:540px;line-height:1.7}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--br2),transparent);margin:0 48px}
+.gtxt{background:linear-gradient(135deg,var(--pl),var(--al));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.display{font-family:'Playfair Display',serif}
+
+/* ── REVEAL ANIMATIONS ── */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
+.rv.on{opacity:1;transform:translateY(0)}
+.rvl{opacity:0;transform:translateX(-36px);transition:opacity .7s ease,transform .7s ease}
+.rvl.on{opacity:1;transform:translateX(0)}
+.rvr{opacity:0;transform:translateX(36px);transition:opacity .7s ease,transform .7s ease}
+.rvr.on{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}.d6{transition-delay:.6s}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:0;max-width:100%;text-align:center}
+.hbg{position:absolute;inset:0;background:var(--bg);transition:background .4s ease}
+.hbg::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,var(--grid-dot) 1px,transparent 1px);background-size:30px 30px}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.o1{width:580px;height:580px;background:radial-gradient(circle,var(--orb1) 0%,transparent 70%);top:-180px;left:-80px}
+.o2{width:480px;height:480px;background:radial-gradient(circle,var(--orb2) 0%,transparent 70%);bottom:-80px;right:-60px}
+.o3{width:360px;height:360px;background:radial-gradient(circle,var(--orb3) 0%,transparent 70%);top:45%;left:58%}
+.hcontent{position:relative;z-index:2;padding:130px 48px 56px;max-width:880px;margin:0 auto}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;background:rgba(79,70,229,.13);border:1px solid rgba(79,70,229,.28);border-radius:99px;padding:5px 16px 5px 8px;margin-bottom:28px;font-size:12px;font-weight:600;color:var(--pl);letter-spacing:.03em}
+.edot{width:7px;height:7px;background:var(--a);border-radius:50%;animation:pdot 2s infinite}
+@keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.65)}}
+.htitle{font-size:clamp(50px,8vw,96px);font-weight:900;line-height:.98;letter-spacing:-.04em;margin-bottom:22px;font-family:'Playfair Display',serif}
+.htagline{font-size:clamp(16px,2vw,21px);color:var(--t2);max-width:620px;margin:0 auto 38px;line-height:1.65;font-weight:400}
+.hmeta{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:52px}
+.mpill{display:flex;align-items:center;gap:7px;background:var(--s2);border:1px solid var(--br2);border-radius:99px;padding:7px 14px;font-size:12px;font-weight:500;color:var(--t2)}
+.mpill strong{color:var(--t);font-weight:600}
+
+/* ── BROWSER FRAME ── */
+.hmock{position:relative;z-index:2;width:100%;max-width:1260px;margin:0 auto;padding:0 24px 70px}
+.bf{background:var(--s2);border-radius:15px;border:1px solid var(--br2);overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.035),0 40px 80px rgba(0,0,0,.6),0 0 100px rgba(79,70,229,.1);transition:transform .1s ease}
+.bc{background:var(--s3);padding:11px 15px;display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--br)}
+.bdots{display:flex;gap:6px}
+.bd{width:11px;height:11px;border-radius:50%}
+.bd:nth-child(1){background:#ff5f56}.bd:nth-child(2){background:#ffbd2e}.bd:nth-child(3){background:#27c93f}
+.burl{flex:1;background:var(--s1);border-radius:6px;padding:5px 12px;font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;max-width:380px;margin:0 auto}
+.bcontent{display:flex;height:500px;overflow:hidden}
+
+/* ── MOCK UI ── */
+.msb{width:195px;background:var(--s1);border-right:1px solid var(--br);padding:18px 10px;flex-shrink:0}
+.msbl{display:flex;align-items:center;gap:8px;padding:5px 7px;margin-bottom:20px}
+.msbli{width:26px;height:26px;background:linear-gradient(135deg,var(--p),var(--pu));border-radius:7px}
+.msblt{font-size:12px;font-weight:700;color:var(--t)}
+.mni{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;margin-bottom:2px;font-size:11px;color:var(--t3)}
+.mni.act{background:rgba(79,70,229,.15);color:var(--pl)}
+.mnic{width:14px;height:14px;border-radius:3px;background:currentColor;opacity:.5;flex-shrink:0}
+.mni.act .mnic{opacity:1}
+.mmain{flex:1;background:var(--bg2);display:flex;flex-direction:column;overflow:hidden}
+.mhead{background:var(--s1);border-bottom:1px solid var(--br);padding:13px 22px;display:flex;align-items:center;justify-content:space-between}
+.mpt{font-size:14px;font-weight:700;color:var(--t)}
+.mhr{display:flex;align-items:center;gap:10px}
+.mav{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--pu))}
+.mbody{padding:18px 22px;overflow:hidden;flex:1}
+.mstats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.msc{background:var(--s1);border-radius:9px;padding:12px;border:1px solid var(--br)}
+.msl{font-size:9px;color:var(--t3);margin-bottom:5px}
+.msv{font-size:18px;font-weight:800;color:var(--t)}
+.msub{font-size:8px;color:var(--a);margin-top:2px}
+.mcharts{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:16px}
+.mcc{background:var(--s1);border-radius:9px;padding:12px;border:1px solid var(--br)}
+.mct{font-size:10px;font-weight:600;color:var(--t2);margin-bottom:10px}
+.mbar-ch{display:flex;align-items:flex-end;gap:6px;height:72px}
+.mbar{flex:1;background:linear-gradient(to top,var(--p),var(--pl));border-radius:3px 3px 0 0;opacity:.85}
+.mdonut{width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--p) 0% 42%,var(--a) 42% 67%,var(--pu) 67% 85%,var(--s3) 85% 100%);margin:3px auto;position:relative}
+.mdonut::after{content:'';position:absolute;inset:14px;background:var(--s1);border-radius:50%}
+.mtable{background:var(--s1);border-radius:9px;border:1px solid var(--br);overflow:hidden}
+.mth{display:grid;grid-template-columns:1fr 1.4fr 1fr .8fr .8fr;padding:9px 12px;border-bottom:1px solid var(--br);font-size:8px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em}
+.mtr{display:grid;grid-template-columns:1fr 1.4fr 1fr .8fr .8fr;padding:8px 12px;border-bottom:1px solid var(--br);font-size:9px;color:var(--t2);align-items:center}
+.mtr:last-child{border-bottom:none}
+.sp{display:inline-block;padding:2px 7px;border-radius:99px;font-size:8px;font-weight:700}
+.ss{background:rgba(139,92,246,.2);color:#a78bfa}
+.sc{background:rgba(59,130,246,.2);color:#93c5fd}
+.sr{background:rgba(16,185,129,.2);color:#6ee7b7}
+.sd{background:rgba(245,158,11,.2);color:#fcd34d}
+
+/* ── FLOATING CARDS ── */
+.fcards{position:absolute;inset:0;pointer-events:none}
+.fc{position:absolute;background:var(--s2);border:1px solid var(--br2);border-radius:13px;padding:13px 16px;box-shadow:0 20px 40px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.04)}
+.fc1{top:14%;left:-42px}.fc2{top:52%;right:-48px}.fc3{bottom:7%;left:4%}
+@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+.fc1{animation:flt 6s ease-in-out infinite}.fc2{animation:flt 6s ease-in-out infinite;animation-delay:-2s}.fc3{animation:flt 6s ease-in-out infinite;animation-delay:-4s}
+.fct{font-size:9px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.fmv{font-size:22px;font-weight:800;color:var(--t)}
+.fsub{font-size:10px;color:var(--a);margin-top:2px}
+.fotp{display:flex;gap:5px;margin-top:7px}
+.ob{width:26px;height:32px;background:var(--s1);border:1px solid var(--p);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--pl)}
+.fstages{display:flex;flex-direction:column;gap:4px;margin-top:5px}
+.fsi{display:flex;align-items:center;gap:6px;font-size:9px;color:var(--t2)}
+.fsd{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* ── SCROLL INDICATOR ── */
+.si{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:7px;color:var(--t3);font-size:10px;font-weight:500;letter-spacing:.07em;animation:sb 2s ease-in-out infinite}
+.sil{width:1px;height:32px;background:linear-gradient(to bottom,var(--br2),transparent)}
+@keyframes sb{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
+
+/* ── OVERVIEW ── */
+.ovg{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;margin-top:60px}
+.mrow{display:flex;align-items:flex-start;gap:14px;padding-bottom:18px;border-bottom:1px solid var(--br)}
+.mrow:last-child{border-bottom:none}
+.mk{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);min-width:80px;padding-top:2px}
+.mv{font-size:14px;font-weight:500;color:var(--t);line-height:1.5}
+.mtags{display:flex;flex-wrap:wrap;gap:5px}
+.mtag{background:var(--s2);border:1px solid var(--br2);border-radius:5px;padding:3px 9px;font-size:11px;font-weight:500;color:var(--t2)}
+.ovcards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ovc{background:var(--s1);border:1px solid var(--br);border-radius:var(--r);padding:26px 22px;transition:var(--tr);position:relative;overflow:hidden}
+.ovc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--p),var(--a));opacity:0;transition:var(--tr)}
+.ovc:hover{border-color:var(--br2);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.ovc:hover::before{opacity:1}
+.ovic{font-size:26px;margin-bottom:12px}
+.ovlb{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+.ovvl{font-size:20px;font-weight:800;color:var(--t)}
+.ovds{font-size:12px;color:var(--t2);margin-top:6px;line-height:1.5}
+
+/* ── CHALLENGE ── */
+.probst{background:linear-gradient(135deg,var(--s2),var(--s3));border:1px solid var(--br2);border-left:4px solid var(--p);border-radius:0 var(--r) var(--r) 0;padding:36px 44px;margin:44px 0;position:relative}
+.probst::before{content:'"';position:absolute;top:8px;left:44px;font-size:90px;color:var(--p);opacity:.08;font-family:'Playfair Display',serif;line-height:1}
+.probtxt{font-size:clamp(18px,2.3vw,26px);font-weight:600;color:var(--t);line-height:1.5;font-family:'Playfair Display',serif;font-style:italic}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+.pc{background:var(--s1);border:1px solid var(--br);border-radius:var(--r);padding:28px 24px;position:relative;overflow:hidden;transition:var(--tr);opacity:0;transform:translateY(28px)}
+.pc.on{opacity:1;transform:translateY(0);transition:opacity .6s ease,transform .6s ease}
+.pc:hover{border-color:rgba(79,70,229,.3);transform:translateY(-5px);box-shadow:0 18px 36px rgba(0,0,0,.3)}
+.pcn{
+  position:absolute;top:14px;right:18px;
+  font-size:42px;font-weight:900;
+  font-family:'Playfair Display',serif;line-height:1;
+  background:linear-gradient(135deg,var(--p),var(--pu));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  opacity:.18;
+  transition:opacity var(--tr);
+}
+.pc:hover .pcn{opacity:.35}
+.pce{font-size:30px;margin-bottom:14px;display:block}
+.pct{font-size:16px;font-weight:700;color:var(--t);margin-bottom:8px}
+.pcd{font-size:13px;color:var(--t2);line-height:1.6}
+
+/* ── RESEARCH ── */
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-top:60px}
+.rmeths{display:flex;flex-direction:column;gap:14px}
+.rcard{display:flex;align-items:flex-start;gap:18px;background:var(--s1);border:1px solid var(--br);border-radius:var(--r);padding:22px;transition:var(--tr);opacity:0;transform:translateX(-18px)}
+.rcard.on{opacity:1;transform:translateX(0);transition:opacity .5s ease,transform .5s ease}
+.rcard:hover{border-color:rgba(79,70,229,.35);background:var(--s2)}
+.ric{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.rpu{background:rgba(139,92,246,.15)}.rbl{background:rgba(59,130,246,.15)}.rgr{background:rgba(16,185,129,.15)}.rgo{background:rgba(245,158,11,.15)}
+.rinfo h4{font-size:14px;font-weight:700;color:var(--t);margin-bottom:5px}
+.rinfo p{font-size:12px;color:var(--t2);line-height:1.6}
+.rstats{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.rsb{background:var(--s1);border:1px solid var(--br);border-radius:var(--r);padding:28px 24px;text-align:center;transition:var(--tr)}
+.rsb:hover{border-color:var(--p);background:var(--s2)}
+.rsn{font-size:44px;font-weight:900;background:linear-gradient(135deg,var(--pl),var(--al));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:7px}
+.rsl{font-size:12px;color:var(--t2);font-weight:500}
+
+/* ── PERSONA ── */
+.percards{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:60px}
+.percard{background:var(--s1);border:1px solid var(--br);border-radius:var(--rl);overflow:hidden;transition:var(--tr)}
+.percard:hover{border-color:var(--br2);transform:translateY(-7px);box-shadow:0 36px 72px rgba(0,0,0,.4)}
+.perh{padding:28px 28px 22px;background:linear-gradient(135deg,var(--s2),var(--s3));border-bottom:1px solid var(--br);display:flex;gap:18px;align-items:flex-start}
+.pav{width:66px;height:66px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;flex-shrink:0}
+.pa1{background:linear-gradient(135deg,var(--p),var(--pu))}.pa2{background:linear-gradient(135deg,var(--a),var(--cy))}
+.pname{font-size:20px;font-weight:800;color:var(--t);margin-bottom:3px}
+.ptag{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600;margin-bottom:6px}
+.pt1{background:rgba(79,70,229,.2);color:var(--pl)}.pt2{background:rgba(16,185,129,.2);color:var(--al)}
+.page{font-size:12px;color:var(--t3)}
+.perb{padding:24px 28px 28px}
+.pquote{font-style:italic;font-size:14px;color:var(--t2);border-left:3px solid var(--p);padding-left:14px;margin-bottom:20px;line-height:1.6}
+.pstl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;margin-top:18px}
+.plist{list-style:none;display:flex;flex-direction:column;gap:6px}
+.plist li{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--t2);line-height:1.5}
+.plist li::before{content:'→';color:var(--pl);flex-shrink:0;font-size:11px;margin-top:1px}
+.plist.fr li::before{content:'✕';color:#f87171}
+
+/* ── EMPATHY MAP ── */
+.emap{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;background:var(--br);border-radius:var(--rl);overflow:hidden;border:1px solid var(--br2);margin-top:60px;min-height:480px}
+.eq{background:var(--s1);padding:36px 32px;transition:var(--tr);cursor:default;position:relative}
+.eq:hover{background:var(--s2);z-index:2}
+.ecl{position:absolute;top:16px;right:18px;font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t4)}
+.eic{font-size:32px;margin-bottom:14px;display:block}
+.etit{font-size:20px;font-weight:800;color:var(--t);margin-bottom:17px}
+.eitems{display:flex;flex-direction:column;gap:9px}
+.eitem{display:flex;align-items:flex-start;gap:9px;font-size:12px;color:var(--t2);padding:9px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--br);line-height:1.5;transition:var(--tf)}
+.eq:hover .eitem{border-color:var(--br2)}
+
+/* ── JOURNEY ── */
+.jswrap{overflow-x:auto;padding:28px 0 44px;scrollbar-width:none;cursor:grab;display:flex;justify-content:center;}
+.jswrap::-webkit-scrollbar{display:none}
+.jswrap:active{cursor:grabbing}
+.jtrack{display:flex;gap:0;min-width:max-content;position:relative;margin-top:36px;align-items:flex-start;}
+.jline{position:absolute;top:84px;left:72px;right:72px;height:2px;background:linear-gradient(90deg,var(--p),var(--a))}
+.jdot{position:absolute;top:78px;width:12px;height:12px;border-radius:50%;background:var(--pl);box-shadow:0 0 10px var(--p);animation:jtrav 6s ease-in-out infinite}
+@keyframes jtrav{0%{left:72px}100%{left:calc(100% - 72px)}}
+.jstage{width:265px;flex-shrink:0;padding:0 18px;display:flex;flex-direction:column;align-items:center}
+.jsi{width:56px;height:56px;border-radius:50%;background:var(--s3);border:2px solid var(--br2);display:flex;align-items:center;justify-content:center;font-size:22px;position:relative;z-index:2;margin-bottom:28px;transition:var(--tr)}
+.jstage:hover .jsi{background:var(--p);border-color:var(--pl);box-shadow:0 0 18px var(--pg)}
+.jcard{background:var(--s1);border:1px solid var(--br);border-radius:var(--r);padding:22px 18px;width:100%;transition:var(--tr)}
+.jstage:hover .jcard{border-color:rgba(79,70,229,.3);background:var(--s2)}
+.jsn{font-size:14px;font-weight:700;color:var(--t);margin-bottom:14px;text-align:center}
+.jrl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t4);margin-bottom:4px}
+.jrv{font-size:11px;color:var(--t2);margin-bottom:12px;line-height:1.5}
+.ebar{display:flex;gap:3px;align-items:center;margin-bottom:12px}
+.edot{width:9px;height:9px;border-radius:50%}
+.eh{background:var(--a)}.em{background:var(--go)}.el{background:#ef4444}.ei{background:var(--br2)}
+
+/* ── COMPETITIVE ── */
+.cgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:60px}
+.ccard{perspective:1000px;height:370px}
+.ccin{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,0,.2,1)}
+.ccard:hover .ccin{transform:rotateY(180deg)}
+.cf,.cbk{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);border:1px solid var(--br);padding:26px 22px;background:var(--s1)}
+.cbk{transform:rotateY(180deg);background:var(--s2);border-color:var(--br2)}
+.cwinner{background:linear-gradient(135deg,rgba(79,70,229,.13),rgba(16,185,129,.08));border-color:rgba(79,70,229,.35)}
+.cwbadge{position:absolute;top:14px;right:14px;background:var(--a);color:var(--bg);font-size:9px;font-weight:700;padding:2px 9px;border-radius:99px}
+.clogo{width:44px;height:44px;border-radius:11px;margin-bottom:14px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff}
+.cname{font-size:17px;font-weight:800;color:var(--t);margin-bottom:4px;letter-spacing:-.01em}
+.ctype{font-size:11px;color:var(--t2);margin-bottom:17px;font-weight:500}
+.cflist{list-style:none;display:flex;flex-direction:column;gap:7px}
+.cflist li{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--t2)}
+.ck{color:var(--a)}.cx{color:#ef4444}.cp{color:var(--go)}
+.cbtit{font-size:13px;font-weight:700;color:var(--t);margin-bottom:14px}
+.cbsec{margin-bottom:12px}
+.cblbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t4);margin-bottom:4px}
+.cbtxt{font-size:11px;color:var(--t2);line-height:1.5}
+
+/* ── INFORMATION ARCHITECTURE ── */
+.iacon{margin-top:60px;background:var(--s1);border:1px solid var(--br);border-radius:var(--rl);padding:44px;overflow:auto}
+.iatree{display:flex;flex-direction:column;align-items:center;gap:0;min-width:860px}
+.iaroot{background:linear-gradient(135deg,var(--p),var(--pu));color:#fff;padding:12px 30px;border-radius:99px;font-weight:700;font-size:14px}
+.iacv{width:2px;height:32px;background:var(--br2);margin:0 auto}
+.iarow{display:flex;gap:36px;justify-content:center}
+.iaportal{display:flex;flex-direction:column;align-items:center}
+.iapn{padding:9px 22px;border-radius:9px;font-size:12px;font-weight:700;border:2px solid}
+.iaadm{background:rgba(79,70,229,.15);border-color:var(--p);color:var(--pl)}
+.iacus{background:rgba(16,185,129,.15);border-color:var(--a);color:var(--al)}
+.iatal{background:rgba(245,158,11,.15);border-color:var(--go);color:#fbbf24}
+.iadel{background:rgba(59,130,246,.15);border-color:var(--bl);color:#93c5fd}
+.iachild{display:flex;gap:6px;margin-top:22px;position:relative;flex-wrap:wrap;max-width:300px;justify-content:center}
+.iachild::before{content:'';position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:2px;height:12px;background:var(--br2)}
+.ialeaf{padding:6px 12px;background:var(--s2);border:1px solid var(--br2);border-radius:7px;font-size:10px;color:var(--t2);white-space:nowrap}
+
+/* ── USER FLOW ── */
+.flowcon{margin-top:60px;background:var(--s1);border:1px solid var(--br);border-radius:var(--rl);padding:44px;overflow:auto}
+.flowg{display:flex;flex-direction:column;gap:18px;align-items:center;min-width:700px}
+.flowr{display:flex;align-items:center;gap:0;justify-content:center;flex-wrap:nowrap}
+.fn{padding:12px 22px;border-radius:11px;font-size:13px;font-weight:600;text-align:center;transition:var(--tr);cursor:default;position:relative;z-index:2;white-space:nowrap}
+.fn:hover{transform:scale(1.05);box-shadow:0 10px 28px rgba(0,0,0,.3)}
+.fen{background:linear-gradient(135deg,var(--p),var(--pu));color:#fff}
+.fac{background:var(--s2);border:1px solid var(--br2);color:var(--t)}
+.fde{background:rgba(245,158,11,.13);border:1px solid var(--go);color:#fbbf24}
+.fsu{background:rgba(16,185,129,.18);border:1px solid var(--a);color:var(--al)}
+.farr{display:flex;align-items:center;padding:0 6px;color:var(--t3);font-size:18px}
+.farrv{height:22px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:16px}
+
+/* ── WIREFRAMES ── */
+.wfg{display:grid;grid-template-columns:1fr auto 1fr;gap:22px;align-items:center;margin-top:60px}
+.wfp{background:var(--s1);border:1px solid var(--br);border-radius:var(--r);overflow:hidden}
+.wflb{padding:11px 18px;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between}
+.wflt{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+.wfbd{font-size:9px;padding:2px 7px;border-radius:99px}
+.wflo{background:rgba(100,116,139,.2);color:var(--t3)}.wfhi{background:rgba(79,70,229,.2);color:var(--pl)}
+.wfcon{padding:18px}
+.lofi{display:flex;flex-direction:column;gap:9px}
+.lob{height:12px;background:var(--s3);border-radius:3px}
+.lob.w8{width:80%}.lob.w6{width:60%}.lob.w10{width:100%}.lob.w4{width:40%}
+.loblk{height:72px;background:var(--s3);border-radius:7px;margin:5px 0}
+.lor{display:flex;gap:7px}
+.loc{flex:1;height:55px;background:var(--s3);border-radius:7px}
+.wfarr{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--pl);font-size:26px}
+.wfal{font-size:10px;color:var(--t3);text-align:center}
+
+/* ── DESIGN SYSTEM ── */
+.dssec{margin-top:60px;display:flex;flex-direction:column;gap:44px}
+.dsblk{background:var(--s1);border:1px solid var(--br);border-radius:var(--r);overflow:hidden}
+.dsbh{padding:18px 26px;border-bottom:1px solid var(--br);font-size:12px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em}
+.dsbc{padding:26px}
+.colrow{display:flex;gap:11px;flex-wrap:wrap}
+.csw{display:flex;flex-direction:column;gap:7px;transition:var(--tr)}
+.csw:hover{transform:translateY(-4px)}
+.swbox{width:76px;height:76px;border-radius:11px;border:1px solid rgba(255,255,255,.08)}
+.swn{font-size:10px;font-weight:600;color:var(--t2)}.swh{font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace}
+.trow{display:flex;flex-direction:column;gap:18px}
+.tsamp{display:flex;align-items:baseline;gap:22px;padding-bottom:18px;border-bottom:1px solid var(--br)}
+.tsamp:last-child{border-bottom:none;padding-bottom:0}
+.tmeta{min-width:110px;font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace}
+.btnsh{display:flex;gap:13px;flex-wrap:wrap;align-items:center}
+.dsb{padding:9px 22px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:var(--tr);font-family:inherit}
+.dsb:hover{transform:translateY(-2px)}
+.bpri{background:var(--p);color:#fff;box-shadow:0 4px 14px rgba(79,70,229,.4)}.bpri:hover{background:var(--pl)}
+.bacc{background:var(--a);color:var(--bg);box-shadow:0 4px 14px rgba(16,185,129,.3)}
+.bgho{background:transparent;color:var(--pl);border:1px solid var(--p)}.bgho:hover{background:rgba(79,70,229,.1)}
+.bsec{background:var(--s3);color:var(--t);border:1px solid var(--br2)}
+.bdng{background:rgba(239,68,68,.13);color:#f87171;border:1px solid #ef4444}
+.badgesh{display:flex;gap:8px;flex-wrap:wrap}
+.dsbg{padding:3px 12px;border-radius:99px;font-size:11px;font-weight:600}
+.inpsh{display:flex;gap:14px;flex-wrap:wrap}
+.dsinp{background:var(--s2);border:1px solid var(--br2);border-radius:9px;padding:9px 13px;font-size:13px;color:var(--t);font-family:inherit;outline:none;transition:var(--tf);min-width:190px}
+.dsinp:focus{border-color:var(--p);box-shadow:0 0 0 3px var(--pg)}
+.dsinp.err{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.15)}
+
+/* ── UI SHOWCASE ── */
+.shgrid{margin-top:60px;display:flex;flex-direction:column;gap:72px}
+.shrow{display:grid;align-items:center;gap:56px}
+.shrow.lft{grid-template-columns:1fr 1fr}
+.shrow.rgt{grid-template-columns:1fr 1fr;direction:rtl}
+.shrow.rgt>*{direction:ltr}
+.shtitle{font-size:30px;font-weight:800;color:var(--t);line-height:1.2;margin-bottom:14px;letter-spacing:-.02em}
+.shdesc{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:22px}
+.ftags{display:flex;flex-wrap:wrap;gap:7px}
+.ftag{background:var(--s3);border:1px solid var(--br2);border-radius:6px;padding:4px 11px;font-size:11px;font-weight:600;color:var(--t2)}
+/* Phone */
+.phone{width:230px;margin:0 auto;background:var(--s3);border-radius:40px;border:7px solid var(--s3);box-shadow:0 0 0 1px var(--br2),0 36px 72px rgba(0,0,0,.6);overflow:hidden}
+.pnotch{width:80px;height:22px;background:var(--s3);margin:0 auto;border-radius:0 0 14px 14px;position:relative;z-index:10}
+.pscr{background:var(--s1);min-height:380px;margin-top:-2px}
+.phome{width:72px;height:4px;background:var(--s3);border-radius:99px;margin:9px auto 7px}
+.mob-h{background:var(--s2);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--br)}
+.mob-t{font-size:12px;font-weight:700;color:var(--t)}
+.mob-b{padding:12px}
+.mob-oc{background:var(--s2);border-radius:9px;padding:10px;margin-bottom:9px;border:1px solid var(--br)}
+.mob-on{font-size:10px;font-weight:700;color:var(--pl);margin-bottom:3px}
+.mob-oi{font-size:11px;color:var(--t);margin-bottom:7px}
+.mob-prog{display:flex;gap:2px;margin-bottom:5px}
+.mob-seg{flex:1;height:3px;border-radius:99px;background:var(--br2)}
+.mob-seg.done{background:var(--a)}.mob-seg.act{background:var(--p)}
+.mob-st{font-size:9px;color:var(--a);font-weight:600}
+
+/* ── FEATURES ── */
+.flist{display:flex;flex-direction:column;gap:72px;margin-top:60px}
+.fitem{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.fitem.rev{direction:rtl}.fitem.rev>*{direction:ltr}
+.fnum{
+  font-size:88px;font-weight:900;
+  font-family:'Playfair Display',serif;line-height:1;margin-bottom:-18px;
+  background:linear-gradient(135deg,var(--p),var(--pu));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  opacity:.2;
+  transition:opacity var(--tr);
+  display:block;
+}
+.fitem:hover .fnum{opacity:.45}
+.ftitle{font-size:30px;font-weight:800;color:var(--t);margin-bottom:10px;letter-spacing:-.02em}
+.frow{margin-top:14px;padding:12px 0;border-top:1px solid var(--br)}
+.frtit{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t4);margin-bottom:4px}
+.frtxt{font-size:13px;color:var(--t2);line-height:1.6}
+.fvis{background:var(--s1);border:1px solid var(--br);border-radius:var(--rl);overflow:hidden;box-shadow:0 18px 56px rgba(0,0,0,.4)}
+.fvh{background:var(--s2);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--br)}
+.fvb{padding:18px}
+
+/* ── TESTING ── */
+.testg{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:60px}
+.tmetrics{display:flex;flex-direction:column;gap:18px}
+.mitem{background:var(--s1);border:1px solid var(--br);border-radius:var(--r);padding:22px}
+.mhead2{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.mname{font-size:13px;font-weight:600;color:var(--t)}
+.mvals{display:flex;gap:14px}
+.mvg{font-size:11px;color:var(--t3)}
+.mvg span{font-size:15px;font-weight:700;display:block}
+.bef{color:#f87171}.aft{color:var(--a)}
+.mbarw{display:flex;flex-direction:column;gap:5px}
+.mbarr{display:flex;align-items:center;gap:10px}
+.mbarl{font-size:10px;color:var(--t3);min-width:46px}
+.mbart{flex:1;height:5px;background:var(--s3);border-radius:99px;overflow:hidden}
+.mbarf{height:100%;border-radius:99px;width:0;transition:width 1.5s cubic-bezier(.4,0,.2,1)}
+.mbarf.bef{background:#ef4444}.mbarf.aft{background:var(--a)}
+.tfinds{display:flex;flex-direction:column;gap:16px}
+.fcard{background:var(--s1);border:1px solid var(--br);border-radius:var(--r);overflow:hidden;transition:var(--tr)}
+.fcard:hover{border-color:var(--br2);transform:translateX(4px)}
+.fcardhd{padding:14px 18px;display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--br)}
+.fic{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.fib{background:rgba(239,68,68,.15)}.fia{background:rgba(16,185,129,.15)}
+.fctit{font-size:13px;font-weight:600;color:var(--t)}
+.fcbd{padding:14px 18px;font-size:12px;color:var(--t2);line-height:1.65}
+
+/* ── FINAL RESULT ── */
+#final{max-width:100%;text-align:center;position:relative;overflow:hidden;padding:130px 48px;background:var(--bg)}
+#final::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(79,70,229,.09) 0%,transparent 70%)}
+#final::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.02) 1px,transparent 1px);background-size:30px 30px}
+.rhead{font-size:clamp(26px,3.8vw,50px);font-weight:800;font-family:'Playfair Display',serif;font-style:italic;color:var(--t);max-width:760px;margin:0 auto 56px;line-height:1.22;position:relative;z-index:1}
+.rstats{display:flex;justify-content:center;gap:52px;margin-bottom:72px;flex-wrap:wrap;position:relative;z-index:1}
+.rstat{text-align:center}
+.rsn{font-size:52px;font-weight:900;background:linear-gradient(135deg,var(--pl),var(--al));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:7px}
+.rslbl{font-size:13px;color:var(--t2)}
+
+/* ── LEARNINGS ── */
+.lgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:60px}
+.lcard{background:var(--s1);border:1px solid var(--br);border-radius:var(--rl);padding:32px 28px;transition:var(--tr);position:relative;overflow:hidden}
+.lcard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;transition:var(--tr);opacity:0}
+.lc1::after{background:#ef4444}.lc2::after{background:var(--p)}.lc3::after{background:var(--a)}
+.lcard:hover::after{opacity:1}
+.lcard:hover{transform:translateY(-7px);box-shadow:0 28px 56px rgba(0,0,0,.4);border-color:var(--br2)}
+.ltype{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+.lt1{color:#f87171}.lt2{color:var(--pl)}.lt3{color:var(--al)}
+.ltitle{font-size:20px;font-weight:800;color:var(--t);margin-bottom:12px;line-height:1.25}
+.ltxt{font-size:13px;color:var(--t2);line-height:1.7}
+
+/* ── FOOTER ── */
+footer{background:var(--s1);border-top:1px solid var(--br);padding:56px 48px 36px;text-align:center}
+.flogo{display:inline-flex;align-items:center;gap:10px;margin-bottom:14px}
+.ftagline{font-size:13px;color:var(--t3);margin-bottom:36px}
+.flinks{display:flex;justify-content:center;gap:28px;margin-bottom:36px;flex-wrap:wrap}
+.flinks a{font-size:12px;color:var(--t3);transition:color var(--tf)}.flinks a:hover{color:var(--t)}
+.fcopy{font-size:11px;color:var(--t4)}
+
+/* cursor */
+#cf{position:fixed;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,var(--cursor-cl),transparent 70%);pointer-events:none;z-index:0;transform:translate(-50%,-50%);transition:left .12s ease,top .12s ease}
+
+/* ── LIGHT THEME OVERRIDES ── */
+html[data-theme="light"] .probst{background:linear-gradient(135deg,#eef2ff,#e0e7ff);border-left-color:var(--p)}
+html[data-theme="light"] .bc{background:#e8eef8}
+html[data-theme="light"] .burl{background:#dde5f4;color:var(--t3)}
+html[data-theme="light"] .bcontent{background:#f0f4ff}
+html[data-theme="light"] .msb{background:#e8eef8;border-right-color:var(--br2)}
+html[data-theme="light"] .mmain{background:#f5f7ff}
+html[data-theme="light"] .mhead{background:#e8eef8}
+html[data-theme="light"] .msc{background:#fff;border-color:var(--br2);box-shadow:0 2px 8px rgba(79,70,229,.08)}
+html[data-theme="light"] .mcc{background:#fff;border-color:var(--br2)}
+html[data-theme="light"] .mtable{background:#fff;border-color:var(--br2)}
+html[data-theme="light"] .mth{border-color:var(--br2)}
+html[data-theme="light"] .mtr{border-color:var(--br2)}
+html[data-theme="light"] .mdonut::after{background:#fff}
+html[data-theme="light"] .mni.act{background:rgba(79,70,229,.12)}
+html[data-theme="light"] .fc{background:#fff;border-color:rgba(79,70,229,.2);box-shadow:0 8px 24px rgba(79,70,229,.12)}
+html[data-theme="light"] .bf{background:#fff;border-color:rgba(79,70,229,.18);box-shadow:0 0 0 1px rgba(79,70,229,.08),0 40px 80px rgba(79,70,229,.15)}
+html[data-theme="light"] .pscr{background:#f0f4ff}
+html[data-theme="light"] .mob-h{background:#e8eef8;border-color:var(--br2)}
+html[data-theme="light"] .mob-oc{background:#fff;border-color:rgba(79,70,229,.2)}
+html[data-theme="light"] .phone{background:#e0e7ff;border-color:#e0e7ff;box-shadow:0 0 0 1px rgba(79,70,229,.2),0 36px 72px rgba(79,70,229,.2)}
+html[data-theme="light"] .pnotch{background:#e0e7ff}
+html[data-theme="light"] .phome{background:#e0e7ff}
+html[data-theme="light"] .eq{background:#fff}
+html[data-theme="light"] .eq:hover{background:#f5f7ff}
+html[data-theme="light"] .eitem{background:#f0f4ff;border-color:var(--br2)}
+html[data-theme="light"] .emap{background:var(--br2)}
+html[data-theme="light"] .iacon,.flowcon{background:#fff;border-color:rgba(79,70,229,.2)}
+html[data-theme="light"] .ialeaf{background:#f0f4ff;border-color:rgba(79,70,229,.2);color:var(--t2)}
+html[data-theme="light"] .jcard{background:#fff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .jsi{background:#e8eef8;border-color:rgba(79,70,229,.2)}
+html[data-theme="light"] .fvis{background:#fff;border-color:rgba(79,70,229,.18)}
+html[data-theme="light"] .fvh{background:#f0f4ff;border-color:var(--br2)}
+html[data-theme="light"] .fcard{background:#fff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .fcardhd{background:#f5f7ff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .ovc{background:#fff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .ovc:hover{box-shadow:0 20px 40px rgba(79,70,229,.12)}
+html[data-theme="light"] .percard{background:#fff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .perh{background:linear-gradient(135deg,#eef2ff,#e0e7ff);border-color:var(--br2)}
+html[data-theme="light"] .rcard{background:#fff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .rcard:hover{background:#f5f7ff}
+html[data-theme="light"] .rsb{background:#fff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .rsb:hover{background:#f5f7ff}
+html[data-theme="light"] .mitem{background:#fff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .pc{background:#fff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .lcard{background:#fff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .dsblk{background:#fff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .dsbh{background:#f5f7ff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .dsinp{background:#f0f4ff;border-color:rgba(79,70,229,.25);color:var(--t)}
+html[data-theme="light"] .dsinp::placeholder{color:var(--t3)}
+html[data-theme="light"] .wfp{background:#fff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .wflb{background:#f5f7ff;border-color:var(--br2)}
+html[data-theme="light"] .lob,.loblk,.loc{background:#dde5f4}
+html[data-theme="light"] .lofi{background:transparent}
+html[data-theme="light"] .ccard .cf,.ccard .cbk{background:#fff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .ccard .cbk{background:#f5f7ff}
+html[data-theme="light"] .ccard .cwinner.cf{background:linear-gradient(135deg,rgba(79,70,229,.06),rgba(16,185,129,.04));border-color:rgba(79,70,229,.3)}
+html[data-theme="light"] footer{background:#fff;border-color:rgba(79,70,229,.15)}
+html[data-theme="light"] .divider{background:linear-gradient(90deg,transparent,rgba(79,70,229,.2),transparent)}
+html[data-theme="light"] #final::before{background:radial-gradient(ellipse at center,rgba(79,70,229,.06) 0%,transparent 70%)}
+html[data-theme="light"] #final::after{background-image:radial-gradient(circle,rgba(79,70,229,.05) 1px,transparent 1px)}
+html[data-theme="light"] .mbar{background:linear-gradient(to top,var(--p),#818cf8)}
+html[data-theme="light"] .mbarl{color:var(--t3)}
+html[data-theme="light"] .mbart{background:#e2e8f0}
+html[data-theme="light"] .pquote{border-color:var(--p)}
+
+/* ── MOTION EFFECTS ── */
+/* Shimmer sweep on stat number hover */
+@keyframes shimmer{
+  0%{background-position:-200% center}
+  100%{background-position:200% center}
+}
+.rsn,.rsn[data-count]{
+  background-size:200% auto;
+}
+.rsb:hover .rsn,.rsb:hover .rsn[data-count]{
+  animation:shimmer 1.8s linear infinite;
+  background-image:linear-gradient(90deg,var(--pl) 0%,var(--al) 40%,var(--pl) 60%,var(--al) 100%);
+}
+/* Pulse ring on journey dot */
+.jdot::after{
+  content:'';position:absolute;inset:-5px;border-radius:50%;
+  border:2px solid var(--pl);animation:pulse-ring 2s ease-out infinite;
+}
+@keyframes pulse-ring{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(2.4)}}
+/* Glow trail on jline */
+.jline::after{
+  content:'';position:absolute;top:-1px;left:0;height:4px;width:60px;
+  background:linear-gradient(90deg,transparent,#fff,transparent);
+  border-radius:99px;animation:lineglow 3s ease-in-out infinite;
+  opacity:.6;
+}
+@keyframes lineglow{0%{left:0;opacity:.6}50%{opacity:1}100%{left:calc(100% - 60px);opacity:.6}}
+/* Card magnetic lift – applied via JS */
+.mag-lift{transition:transform .15s ease,box-shadow .15s ease!important}
+/* Hero orb drift extra */
+.o1{animation:orb1drift 12s ease-in-out infinite}
+.o2{animation:orb2drift 14s ease-in-out infinite;animation-delay:-4s}
+.o3{animation:orb3drift 10s ease-in-out infinite;animation-delay:-7s}
+@keyframes orb1drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.04)}66%{transform:translate(-20px,15px) scale(.97)}}
+@keyframes orb2drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-25px,20px) scale(1.06)}}
+@keyframes orb3drift{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(20px,-15px) scale(1.03)}80%{transform:translate(-10px,10px) scale(.98)}}
+/* Gradient border sweep on card hover */
+.ovc,.percard,.lcard{
+  background-clip:padding-box;
+}
+.ovc::after,.percard::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  padding:1px;background:linear-gradient(135deg,var(--p),var(--a),var(--pu));
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:0;transition:opacity var(--tr);
+}
+.ovc:hover::after,.percard:hover::after{opacity:1}
+/* Typewriter blink cursor on hero tagline */
+.htagline::after{
+  content:'|';animation:blink 1s step-end infinite;
+  font-weight:300;margin-left:2px;color:var(--pl);
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+/* Wave underline on nav links */
+.nlinks a{position:relative}
+.nlinks a::after{
+  content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;
+  background:linear-gradient(90deg,var(--p),var(--a));
+  border-radius:99px;transition:width .3s ease;
+}
+.nlinks a:hover::after{width:100%}
+/* Floating chip bounce on .mpill */
+.mpill{animation:pillbob 4s ease-in-out infinite}
+.mpill:nth-child(2){animation-delay:-.8s}
+.mpill:nth-child(3){animation-delay:-1.6s}
+.mpill:nth-child(4){animation-delay:-2.4s}
+@keyframes pillbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+/* Soft glow behind challenge quote */
+.probst{box-shadow:0 0 60px rgba(79,70,229,.08)}
+.probst:hover{box-shadow:0 0 80px rgba(79,70,229,.14)}
+@media(max-width:1100px){
+  .ovg,.percards,.cgrid,.testg,.shrow.lft,.shrow.rgt,.fitem,.lgrid{grid-template-columns:1fr}
+  .fitem.rev,.shrow.rgt{direction:ltr}
+  .pgrid{grid-template-columns:1fr 1fr}
+  .emap{grid-template-columns:1fr}
+  .cgrid{grid-template-columns:1fr 1fr}
+  .sec,.full-sec .inner{padding-left:32px;padding-right:32px}
+  #nav,.nlinks{display:flex}
+}
+@media(max-width:768px){
+  .sec{padding:60px 20px}.full-sec .inner{padding:0 20px}
+  #nav{padding:12px 20px}.nlinks{display:none}
+  .pgrid,.cgrid,.lgrid{grid-template-columns:1fr}
+  .ovcards{grid-template-columns:1fr 1fr}
+  .htitle{font-size:44px}
+  .iarow{flex-direction:column;gap:18px}
+  .wfg{grid-template-columns:1fr}.wfarr{display:none}
+}
+</style>
+</head>
+<body>
+<div id="pb"></div>
+<div id="cf"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nlogo">
+    <div class="nlm">TS</div>
+    <div><div class="nlt">TailorStudio</div><div class="nls">UX Case Study</div></div>
+  </a>
+  <ul class="nlinks">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#challenge">Challenge</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#design-system">Design</a></li>
+    <li><a href="#ui-showcase">UI</a></li>
+    <li><a href="#final">Result</a></li>
+  </ul>
+  <div class="nright">
+    <button class="themetoggle" id="themeToggle" title="Toggle light/dark theme" aria-label="Toggle theme">
+      <span class="tknob">
+        <span class="ticon moon">🌙</span>
+        <span class="ticon sun">☀️</span>
+      </span>
+    </button>
+    <a href="#final" class="ncta">View Result →</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════ 1. HERO ══════════════════════════════ -->
+<section id="hero">
+  <div class="hbg">
+    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  </div>
+  <div class="hcontent">
+    <div class="eyebrow"><span class="edot"></span>UX/UI Case Study · Full-Stack SaaS · 2025–2026</div>
+    <h1 class="htitle display"><span class="gtxt">TailorStudio</span></h1>
+    <p class="htagline">From scissors &amp; paper ledgers to a digital-first tailoring platform — designing a role-based SaaS for 4 personas, 9 workflow stages, and 0 lost orders.</p>
+    <div class="hmeta">
+      <div class="mpill">🎨 <strong>Role</strong> Lead UX Designer + Frontend Dev</div>
+      <div class="mpill">⚡ <strong>Stack</strong> React 18 · TailwindCSS · Node.js</div>
+      <div class="mpill">📅 <strong>Duration</strong> 4 months · 2025–26</div>
+      <div class="mpill">🏗️ <strong>Type</strong> Final Year Project · SaaS</div>
+    </div>
+  </div>
+
+  <!-- Hero Browser Mockup -->
+  <div class="hmock rv" id="hmock">
+    <div class="bf" id="hbf">
+      <div class="bc">
+        <div class="bdots"><div class="bd"></div><div class="bd"></div><div class="bd"></div></div>
+        <div class="burl">localhost:5173/admin/dashboard</div>
+      </div>
+      <div class="bcontent">
+        <div class="msb">
+          <div class="msbl"><div class="msbli"></div><span class="msblt">TailorStudio</span></div>
+          <div class="mni act"><div class="mnic"></div>Dashboard</div>
+          <div class="mni"><div class="mnic"></div>Orders</div>
+          <div class="mni"><div class="mnic"></div>Customers</div>
+          <div class="mni"><div class="mnic"></div>Tailors</div>
+          <div class="mni"><div class="mnic"></div>Fabrics</div>
+          <div class="mni"><div class="mnic"></div>Invoices</div>
+          <div class="mni"><div class="mnic"></div>Delivery</div>
+          <div class="mni"><div class="mnic"></div>Reports</div>
+          <div class="mni"><div class="mnic"></div>Messages</div>
+        </div>
+        <div class="mmain">
+          <div class="mhead">
+            <div class="mpt">Dashboard Overview</div>
+            <div class="mhr"><div style="width:66px;height:18px;background:var(--s3);border-radius:5px"></div><div class="mav"></div></div>
+          </div>
+          <div class="mbody">
+            <div class="mstats">
+              <div class="msc"><div class="msl">Total Orders</div><div class="msv">2,847</div><div class="msub">↑ 12% this month</div></div>
+              <div class="msc"><div class="msl">Revenue</div><div class="msv" style="font-size:15px">₹4.2L</div><div class="msub">↑ 8% this month</div></div>
+              <div class="msc"><div class="msl">Customers</div><div class="msv">1,204</div><div class="msub" style="color:var(--go)">Active</div></div>
+              <div class="msc"><div class="msl">Pending</div><div class="msv">34</div><div class="msub" style="color:#f87171">Needs action</div></div>
+            </div>
+            <div class="mcharts">
+              <div class="mcc">
+                <div class="mct">Orders This Week</div>
+                <div class="mbar-ch">
+                  <div class="mbar" style="height:45%"></div><div class="mbar" style="height:65%"></div>
+                  <div class="mbar" style="height:55%"></div><div class="mbar" style="height:82%"></div>
+                  <div class="mbar" style="height:70%"></div><div class="mbar" style="height:100%;background:linear-gradient(to top,var(--a),var(--al))"></div>
+                  <div class="mbar" style="height:60%"></div>
+                </div>
+              </div>
+              <div class="mcc">
+                <div class="mct">Status Mix</div>
+                <div class="mdonut"></div>
+                <div style="display:flex;flex-direction:column;gap:3px;margin-top:6px">
+                  <div style="display:flex;align-items:center;gap:5px;font-size:8px;color:var(--t3)"><div style="width:7px;height:7px;border-radius:2px;background:var(--p)"></div>Stitching 42%</div>
+                  <div style="display:flex;align-items:center;gap:5px;font-size:8px;color:var(--t3)"><div style="width:7px;height:7px;border-radius:2px;background:var(--a)"></div>Ready 25%</div>
+                  <div style="display:flex;align-items:center;gap:5px;font-size:8px;color:var(--t3)"><div style="width:7px;height:7px;border-radius:2px;background:var(--pu)"></div>Cutting 18%</div>
+                </div>
+              </div>
+            </div>
+            <div class="mtable">
+              <div class="mth"><span>Order ID</span><span>Customer</span><span>Garment</span><span>Status</span><span>Amt</span></div>
+              <div class="mtr"><span style="color:var(--pl);font-weight:700">ORD-0847</span><span>Priya Sharma</span><span>Blouse</span><span><span class="sp ss">Stitching</span></span><span style="color:var(--t)">₹2,400</span></div>
+              <div class="mtr"><span style="color:var(--pl);font-weight:700">ORD-0846</span><span>Rahul Mehta</span><span>Suit</span><span><span class="sp sr">Ready</span></span><span style="color:var(--t)">₹8,500</span></div>
+              <div class="mtr"><span style="color:var(--pl);font-weight:700">ORD-0845</span><span>Anjali Patel</span><span>Kurta</span><span><span class="sp sc">Cutting</span></span><span style="color:var(--t)">₹1,800</span></div>
+              <div class="mtr"><span style="color:var(--pl);font-weight:700">ORD-0844</span><span>Dev Agarwal</span><span>Sherwani</span><span><span class="sp sd">Delivery</span></span><span style="color:var(--t)">₹12,000</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Floating Cards -->
+    <div class="fcards">
+      <div class="fc fc1">
+        <div class="fct">OTP Verification</div>
+        <div style="font-size:10px;color:var(--t2);margin-bottom:7px">Delivery confirmation</div>
+        <div class="fotp">
+          <div class="ob">4</div><div class="ob">8</div><div class="ob">2</div><div class="ob">1</div><div class="ob">9</div><div class="ob">6</div>
+        </div>
+      </div>
+      <div class="fc fc2">
+        <div class="fct">Order Pipeline</div>
+        <div class="fstages">
+          <div class="fsi"><div class="fsd" style="background:var(--a)"></div>Order Placed</div>
+          <div class="fsi"><div class="fsd" style="background:var(--a)"></div>Cloth Collected</div>
+          <div class="fsi"><div class="fsd" style="background:var(--p)"></div>Stitching</div>
+          <div class="fsi"><div class="fsd" style="background:var(--br2)"></div>Quality Check</div>
+          <div class="fsi"><div class="fsd" style="background:var(--br2)"></div>Delivered</div>
+        </div>
+      </div>
+      <div class="fc fc3">
+        <div class="fct">Revenue MTD</div>
+        <div class="fmv">₹4.2L</div>
+        <div class="fsub">↑ 18% vs last month</div>
+      </div>
+    </div>
+  </div>
+  <div class="si">SCROLL<div class="sil"></div>↓</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 2. OVERVIEW ══════════════════════════════ -->
+<section class="sec" id="overview">
+  <div class="lbl">01 — Project Overview</div>
+  <h2 class="stitle">The project at a glance</h2>
+  <p class="ssub">A multi-tenant SaaS platform digitizing every tailoring business touchpoint — from the first stitch to verified doorstep delivery.</p>
+  <div class="ovg">
+    <div class="rv" style="display:flex;flex-direction:column;gap:18px">
+      <div class="mrow"><div class="mk">Project</div><div class="mv">TailorStudio — Online Tailor Management System</div></div>
+      <div class="mrow"><div class="mk">Goal</div><div class="mv">Replace manual, paper-based tailoring workflows with a real-time, role-based digital platform.</div></div>
+      <div class="mrow"><div class="mk">My Role</div><div class="mv">Lead UX/UI Designer + Frontend Developer (Design-to-Code)</div></div>
+      <div class="mrow"><div class="mk">Duration</div><div class="mv">4 months · Academic Year 2025–26</div></div>
+      <div class="mrow"><div class="mk">Tools</div><div class="mv"><div class="mtags"><span class="mtag">Figma</span><span class="mtag">React 18</span><span class="mtag">TailwindCSS</span><span class="mtag">Framer Motion</span><span class="mtag">Node.js</span><span class="mtag">MongoDB</span><span class="mtag">Socket.io</span><span class="mtag">Recharts</span></div></div></div>
+      <div class="mrow"><div class="mk">Platform</div><div class="mv">Web App (Desktop + Mobile Responsive)</div></div>
+    </div>
+    <div class="ovcards">
+      <div class="ovc rv d1"><div class="ovic">🎯</div><div class="ovlb">Core Goal</div><div class="ovvl">Zero Lost Orders</div><div class="ovds">Centralized, real-time order tracking eliminates paper registers forever.</div></div>
+      <div class="ovc rv d2"><div class="ovic">👥</div><div class="ovlb">Users Served</div><div class="ovvl">4 Portals</div><div class="ovds">Admin, Tailor, Delivery Agent &amp; Customer — each with custom UX.</div></div>
+      <div class="ovc rv d3"><div class="ovic">🔄</div><div class="ovlb">Order Lifecycle</div><div class="ovvl">9 Stages</div><div class="ovds">From placement to OTP-verified doorstep delivery — fully tracked.</div></div>
+      <div class="ovc rv d4"><div class="ovic">⚡</div><div class="ovlb">Real-time</div><div class="ovvl">Socket.io</div><div class="ovds">Instant notifications, live chat, and status updates across all portals.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 3. CHALLENGE ══════════════════════════════ -->
+<div class="full-sec" id="challenge">
+  <div class="inner">
+    <div class="lbl">02 — The Challenge</div>
+    <h2 class="stitle">A ₹50,000 Cr industry running on notebooks</h2>
+    <div class="probst rv">
+      <p class="probtxt">"Traditional tailoring shops manage thousands of orders through handwritten ledgers, verbal confirmations, and paper measurement cards — leading to lost orders, missed deliveries, and frustrated customers."</p>
+    </div>
+    <div class="pgrid">
+      <div class="pc"><span class="pcn">01</span><span class="pce">📋</span><h3 class="pct">Manual Order Tracking</h3><p class="pcd">Orders in physical registers. No way to instantly look up status. Staff must search handwritten pages per customer call.</p></div>
+      <div class="pc"><span class="pcn">02</span><span class="pce">📏</span><h3 class="pct">Lost Measurements</h3><p class="pcd">Customer measurements on scraps of paper — easily lost or damaged. Returning customers must be remeasured from scratch.</p></div>
+      <div class="pc"><span class="pcn">03</span><span class="pce">📅</span><h3 class="pct">Appointment Chaos</h3><p class="pcd">Fittings booked verbally. Double-bookings happen. No automated reminders. No consolidated calendar view for the owner.</p></div>
+      <div class="pc"><span class="pcn">04</span><span class="pce">🚚</span><h3 class="pct">Delivery Disputes</h3><p class="pcd">No verification that a delivery agent collected cloth or delivered the garment. Disputes with zero audit trail to resolve.</p></div>
+      <div class="pc"><span class="pcn">05</span><span class="pce">💰</span><h3 class="pct">Invoice Arithmetic</h3><p class="pcd">Handwritten invoices, manual advance calculations, and outstanding balance errors cost shops money and customer trust.</p></div>
+      <div class="pc"><span class="pcn">06</span><span class="pce">🔔</span><h3 class="pct">Zero Real-Time Updates</h3><p class="pcd">Customers receive no status updates unless they call. Tailors can't notify admin instantly. Everyone operates blind.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 4. RESEARCH ══════════════════════════════ -->
+<section class="sec" id="research">
+  <div class="lbl">03 — UX Research</div>
+  <h2 class="stitle">Research before design</h2>
+  <p class="ssub">Three weeks of fieldwork — observing real tailor shops, interviewing stakeholders, and analyzing competitors before opening Figma.</p>
+  <div class="rg">
+    <div class="rmeths">
+      <div class="rcard d1"><div class="ric rpu">🗣️</div><div class="rinfo"><h4>Stakeholder Interviews</h4><p>In-depth sessions with 8 shop owners, 6 tailors, 4 delivery agents & 12 customers. Uncovered core pain points through open-ended conversational interviews.</p></div></div>
+      <div class="rcard d2"><div class="ric rbl">📋</div><div class="rinfo"><h4>Surveys &amp; Questionnaires</h4><p>Distributed structured questionnaires to 50+ tailoring business stakeholders across urban and semi-urban environments to quantify pain points.</p></div></div>
+      <div class="rcard d3"><div class="ric rgr">👁️</div><div class="rinfo"><h4>Observational Study</h4><p>Spent time in 2 medium-sized tailoring businesses observing the complete real-world workflow, identifying friction points firsthand.</p></div></div>
+      <div class="rcard d4"><div class="ric rgo">🔍</div><div class="rinfo"><h4>Competitive Analysis</h4><p>Analyzed 3 existing tools: Stitchit, TailorPad, and generic POS systems. Identified critical feature gaps and opportunities.</p></div></div>
+    </div>
+    <div class="rstats rv">
+      <div class="rsb"><div class="rsn">30+</div><div class="rsl">Stakeholder Interviews</div></div>
+      <div class="rsb"><div class="rsn">3</div><div class="rsl">Competitor Products Analyzed</div></div>
+      <div class="rsb"><div class="rsn">2</div><div class="rsl">Tailor Shops Observed</div></div>
+      <div class="rsb"><div class="rsn">6</div><div class="rsl">Core Pain Points Identified</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 5. PERSONA ══════════════════════════════ -->
+<div class="full-sec" id="persona">
+  <div class="inner">
+    <div class="lbl">04 — User Personas</div>
+    <h2 class="stitle">Who are we designing for?</h2>
+    <p class="ssub">Four distinct user types — each needing a completely custom portal, information architecture, and interaction model.</p>
+    <div class="percards">
+      <div class="percard rv d1">
+        <div class="perh">
+          <div class="pav pa1">RK</div>
+          <div>
+            <div class="pname">Raj Kumar</div>
+            <span class="ptag pt1">Shop Administrator</span>
+            <div class="page">42 years · Tailor shop owner for 15+ years</div>
+          </div>
+        </div>
+        <div class="perb">
+          <p class="pquote">"I need to know the status of every order at every moment — and I need my invoices to calculate themselves."</p>
+          <div class="pstl">Goals</div>
+          <ul class="plist">
+            <li>Full visibility over all 50+ active orders at any time</li>
+            <li>Automated invoice generation with balance tracking</li>
+            <li>Real-time delivery confirmation without phone calls</li>
+            <li>Business analytics to understand peak periods</li>
+          </ul>
+          <div class="pstl">Frustrations</div>
+          <ul class="plist fr">
+            <li>Can't quickly find order status when customers call</li>
+            <li>Manual invoice arithmetic leads to costly errors</li>
+            <li>No way to know if deliveries actually happened</li>
+          </ul>
+        </div>
+      </div>
+      <div class="percard rv d2">
+        <div class="perh">
+          <div class="pav pa2">PS</div>
+          <div>
+            <div class="pname">Priya Sharma</div>
+            <span class="ptag pt2">Customer</span>
+            <div class="page">28 years · Working professional, 6–8 garments/year</div>
+          </div>
+        </div>
+        <div class="perb">
+          <p class="pquote">"I don't want to call the shop every day just to know if my dress is ready. Just tell me when it's done."</p>
+          <div class="pstl">Goals</div>
+          <ul class="plist">
+            <li>Real-time order status without calling the shop</li>
+            <li>Easy online booking for fittings at her convenience</li>
+            <li>Secure, OTP-verified delivery at her doorstep</li>
+            <li>Access to shared design references and digital receipts</li>
+          </ul>
+          <div class="pstl">Frustrations</div>
+          <ul class="plist fr">
+            <li>No visibility into order progress between visits</li>
+            <li>Measurements get lost between orders</li>
+            <li>Delivery disputes with no resolution mechanism</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 6. EMPATHY MAP ══════════════════════════════ -->
+<section class="sec" id="empathy">
+  <div class="lbl">05 — Empathy Map</div>
+  <h2 class="stitle">Inside the admin's mind</h2>
+  <p class="ssub">What Raj (shop admin) says, thinks, does, and feels when managing his tailoring business today.</p>
+  <div class="emap rv">
+    <div class="eq">
+      <span class="ecl">SAYS</span><span class="eic">💬</span><div class="etit">Says</div>
+      <div class="eitems">
+        <div class="eitem">"I spend 2 hours a day just answering 'what's the status?' calls."</div>
+        <div class="eitem">"The notebook system worked for 15 years, but we're losing customers to shops with apps."</div>
+        <div class="eitem">"I can never tell at a glance which orders are overdue."</div>
+      </div>
+    </div>
+    <div class="eq">
+      <span class="ecl">THINKS</span><span class="eic">🧠</span><div class="etit">Thinks</div>
+      <div class="eitems">
+        <div class="eitem">Worries about a missed order causing a wedding-day disaster for a customer.</div>
+        <div class="eitem">Believes digital systems are complex and require technical knowledge he doesn't have.</div>
+        <div class="eitem">Feels there must be a smarter way to assign work based on tailor workload.</div>
+      </div>
+    </div>
+    <div class="eq">
+      <span class="ecl">DOES</span><span class="eic">⚡</span><div class="etit">Does</div>
+      <div class="eitems">
+        <div class="eitem">Maintains 3 physical registers — orders, payments, deliveries.</div>
+        <div class="eitem">Calls delivery agents multiple times per day to confirm pickup status.</div>
+        <div class="eitem">Manually adds up invoice amounts and advance payments with a calculator.</div>
+      </div>
+    </div>
+    <div class="eq">
+      <span class="ecl">FEELS</span><span class="eic">❤️</span><div class="etit">Feels</div>
+      <div class="eitems">
+        <div class="eitem">Overwhelmed during peak wedding seasons when 80+ orders are active simultaneously.</div>
+        <div class="eitem">Anxious every time a delivery agent doesn't pick up the phone after a scheduled delivery.</div>
+        <div class="eitem">Proud of his craft but frustrated that the business side holds him back.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 7. JOURNEY ══════════════════════════════ -->
+<div class="full-sec" id="journey" style="overflow:hidden">
+  <div class="inner">
+    <div class="lbl">06 — User Journey</div>
+    <h2 class="stitle">A customer's complete journey</h2>
+    <p class="ssub">From discovering TailorStudio to receiving a verified garment at the door — 5 key stages mapped with emotions and opportunities.</p>
+  </div>
+  <div class="jswrap" id="jswrap">
+    <div class="jtrack">
+      <div class="jline"></div><div class="jdot"></div>
+      <div class="jstage"><div class="jsi">🔍</div>
+        <div class="jcard"><div class="jsn">Discovery</div><div class="jrl">User Action</div><div class="jrv">Finds TailorStudio via referral. Signs up with name, email &amp; phone.</div><div class="jrl">Emotion</div><div class="ebar"><div class="edot eh"></div><div class="edot eh"></div><div class="edot em"></div><div class="edot ei"></div><div class="edot ei"></div></div><div class="jrl">UX Opportunity</div><div class="jrv" style="color:var(--al)">Role-specific onboarding with guided setup wizard.</div></div>
+      </div>
+      <div class="jstage"><div class="jsi">📋</div>
+        <div class="jcard"><div class="jsn">Placing an Order</div><div class="jrl">User Action</div><div class="jrv">Selects garment, uploads reference image, enters pickup address &amp; date.</div><div class="jrl">Emotion</div><div class="ebar"><div class="edot eh"></div><div class="edot eh"></div><div class="edot eh"></div><div class="edot em"></div><div class="edot ei"></div></div><div class="jrl">UX Opportunity</div><div class="jrv" style="color:var(--al)">Step-by-step form rendering only relevant fields per garment type.</div></div>
+      </div>
+      <div class="jstage"><div class="jsi">🧵</div>
+        <div class="jcard"><div class="jsn">Tracking Progress</div><div class="jrl">User Action</div><div class="jrv">Checks order status. Sees visual 9-stage tracker. Gets push notifications.</div><div class="jrl">Emotion</div><div class="ebar"><div class="edot eh"></div><div class="edot eh"></div><div class="edot eh"></div><div class="edot eh"></div><div class="edot em"></div></div><div class="jrl">UX Opportunity</div><div class="jrv" style="color:var(--al)">Real-time status with timestamp history. Zero calls needed.</div></div>
+      </div>
+      <div class="jstage"><div class="jsi">🚪</div>
+        <div class="jcard"><div class="jsn">Cloth Pickup</div><div class="jrl">User Action</div><div class="jrv">Receives SMS OTP. Shares code with delivery agent who enters it in app.</div><div class="jrl">Emotion</div><div class="ebar"><div class="edot eh"></div><div class="edot eh"></div><div class="edot eh"></div><div class="edot eh"></div><div class="edot eh"></div></div><div class="jrl">UX Opportunity</div><div class="jrv" style="color:var(--al)">OTP verification creates irrefutable digital proof of pickup.</div></div>
+      </div>
+      <div class="jstage"><div class="jsi">✅</div>
+        <div class="jcard"><div class="jsn">Delivery &amp; Done</div><div class="jrl">User Action</div><div class="jrv">Receives delivery OTP. Confirms receipt. Sees invoice. Leaves review.</div><div class="jrl">Emotion</div><div class="ebar"><div class="edot eh"></div><div class="edot eh"></div><div class="edot eh"></div><div class="edot eh"></div><div class="edot eh"></div></div><div class="jrl">UX Opportunity</div><div class="jrv" style="color:var(--al)">Complete audit trail + auto-generated invoice on completion.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 8. COMPETITIVE ══════════════════════════════ -->
+<section class="sec" id="competitive">
+  <div class="lbl">07 — Competitive Analysis</div>
+  <h2 class="stitle">Where competitors fall short</h2>
+  <p class="ssub">Analyzed 3 existing solutions. Found critical gaps that TailorStudio was built to fill. Hover each card to reveal deeper insights.</p>
+  <div class="cgrid">
+    <div class="ccard rv d1"><div class="ccin">
+      <div class="cf"><div class="clogo" style="background:linear-gradient(135deg,#f97316,#ef4444)">St</div><div class="cname">Stitchit</div><div class="ctype">Domain-specific tailoring app</div><ul class="cflist"><li><span class="ck">✓</span>Basic order tracking (3 stages)</li><li><span class="ck">✓</span>Measurement storage</li><li><span class="cx">✕</span>No real-time notifications</li><li><span class="cx">✕</span>No delivery portal</li><li><span class="cx">✕</span>No OTP verification</li></ul></div>
+      <div class="cbk"><div class="cbtit">Analysis — Stitchit</div><div class="cbsec"><div class="cblbl">Strength</div><div class="cbtxt">Domain-aware. Understands tailoring terminology and basic measurement needs.</div></div><div class="cbsec"><div class="cblbl">Weakness</div><div class="cbtxt">3-stage tracking insufficient. No delivery portal. No real-time layer.</div></div><div class="cbsec"><div class="cblbl">Our Opportunity</div><div class="cbtxt">TailorStudio's 9-stage lifecycle and Socket.io notifications directly fill these gaps.</div></div></div>
+    </div></div>
+    <div class="ccard rv d2"><div class="ccin">
+      <div class="cf"><div class="clogo" style="background:linear-gradient(135deg,#3b82f6,#06b6d4)">TP</div><div class="cname">TailorPad</div><div class="ctype">Proprietary SaaS · High cost</div><ul class="cflist"><li><span class="ck">✓</span>5-stage order tracking</li><li><span class="ck">✓</span>Measurement storage</li><li><span class="cp">~</span>Partial role access</li><li><span class="cx">✕</span>High subscription cost</li><li><span class="cx">✕</span>No OTP delivery proof</li></ul></div>
+      <div class="cbk"><div class="cbtit">Analysis — TailorPad</div><div class="cbsec"><div class="cblbl">Strength</div><div class="cbtxt">Good measurement management. 5-stage tracking covers basic workflow.</div></div><div class="cbsec"><div class="cblbl">Weakness</div><div class="cbtxt">Prohibitive pricing for small shops. No delivery portal. Not self-hostable.</div></div><div class="cbsec"><div class="cblbl">Our Opportunity</div><div class="cbtxt">TailorStudio runs at &lt;₹400/month, is open, self-hostable, and adds OTP proof.</div></div></div>
+    </div></div>
+    <div class="ccard rv d3"><div class="ccin">
+      <div class="cf"><div class="clogo" style="background:linear-gradient(135deg,#64748b,#94a3b8)">POS</div><div class="cname">Generic POS</div><div class="ctype">Square, Shopify POS, Vend</div><ul class="cflist"><li><span class="ck">✓</span>Payment processing</li><li><span class="cp">~</span>Basic inventory</li><li><span class="cx">✕</span>No garment understanding</li><li><span class="cx">✕</span>No measurement fields</li><li><span class="cx">✕</span>No order lifecycle</li></ul></div>
+      <div class="cbk"><div class="cbtit">Analysis — Generic POS</div><div class="cbsec"><div class="cblbl">Strength</div><div class="cbtxt">Mature payment processing. Works for simple retail transactions.</div></div><div class="cbsec"><div class="cblbl">Weakness</div><div class="cbtxt">Zero tailoring domain knowledge. Cannot handle garment types, 20+ measurement fields, or multi-stage orders.</div></div><div class="cbsec"><div class="cblbl">Our Opportunity</div><div class="cbtxt">TailorStudio is purpose-built for the tailoring domain from the ground up.</div></div></div>
+    </div></div>
+    <div class="ccard rv d4"><div class="ccin">
+      <div class="cf cwinner"><span class="cwbadge">OUR PRODUCT</span><div class="clogo" style="background:linear-gradient(135deg,var(--p),var(--pu))">TS</div><div class="cname">TailorStudio</div><div class="ctype">Full-stack SaaS · Open &amp; scalable</div><ul class="cflist"><li><span class="ck">✓</span>9-stage order lifecycle</li><li><span class="ck">✓</span>4 dedicated portals</li><li><span class="ck">✓</span>OTP delivery verification</li><li><span class="ck">✓</span>Real-time Socket.io</li><li><span class="ck">✓</span>Multi-tenant architecture</li></ul></div>
+      <div class="cbk" style="background:linear-gradient(135deg,rgba(79,70,229,.15),rgba(16,185,129,.08))"><div class="cbtit" style="background:linear-gradient(135deg,var(--pl),var(--al));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Why TailorStudio Wins</div><div class="cbsec"><div class="cblbl">Differentiator #1</div><div class="cbtxt">Only solution with OTP-verified pickup AND delivery — irrefutable audit trail.</div></div><div class="cbsec"><div class="cblbl">Differentiator #2</div><div class="cbtxt">Multi-tenant SaaS serves multiple shops from one deployment at near-zero cost.</div></div><div class="cbsec"><div class="cblbl">Differentiator #3</div><div class="cbtxt">Socket.io real-time eliminates the #1 complaint: having to call for status updates.</div></div></div>
+    </div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 9. IA ══════════════════════════════ -->
+<div class="full-sec" id="ia">
+  <div class="inner">
+    <div class="lbl">08 — Information Architecture</div>
+    <h2 class="stitle">How the platform is structured</h2>
+    <p class="ssub">Four role-gated portals, each with purpose-built page hierarchies. Total: 31 pages across 4 portals.</p>
+    <div class="iacon rv">
+      <div class="iatree">
+        <div class="iaroot">TailorStudio Platform</div>
+        <div class="iacv"></div>
+        <div class="iarow">
+          <div class="iaportal"><div class="iapn iaadm">Admin Portal</div><div class="iacv" style="height:22px"></div><div class="iachild"><div class="ialeaf">Dashboard</div><div class="ialeaf">Orders</div><div class="ialeaf">Customers</div><div class="ialeaf">Tailors</div><div class="ialeaf">Fabrics</div><div class="ialeaf">Invoices</div><div class="ialeaf">Appointments</div><div class="ialeaf">Delivery Mgmt</div><div class="ialeaf">Documents</div><div class="ialeaf">Messages</div><div class="ialeaf">Reports</div></div></div>
+          <div class="iaportal"><div class="iapn iacus">Customer Portal</div><div class="iacv" style="height:22px"></div><div class="iachild" style="flex-direction:column"><div class="ialeaf">Place Order</div><div class="ialeaf">Order History</div><div class="ialeaf">Track Order</div><div class="ialeaf">Appointments</div><div class="ialeaf">Documents</div><div class="ialeaf">Messages</div></div></div>
+          <div class="iaportal"><div class="iapn iatal">Tailor Portal</div><div class="iacv" style="height:22px"></div><div class="iachild" style="flex-direction:column"><div class="ialeaf">Workboard</div><div class="ialeaf">Order Detail</div><div class="ialeaf">Measurements</div><div class="ialeaf">Fabric Ref.</div><div class="ialeaf">Notifications</div></div></div>
+          <div class="iaportal"><div class="iapn iadel">Delivery Portal</div><div class="iacv" style="height:22px"></div><div class="iachild" style="flex-direction:column"><div class="ialeaf">Dashboard</div><div class="ialeaf">Pickup Tasks</div><div class="ialeaf">Delivery Tasks</div><div class="ialeaf">Notifications</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 10. USER FLOW ══════════════════════════════ -->
+<section class="sec" id="userflow">
+  <div class="lbl">09 — User Flow</div>
+  <h2 class="stitle">Order placement to delivery</h2>
+  <p class="ssub">The critical path — how a customer order moves through the system from creation to OTP-verified doorstep delivery.</p>
+  <div class="flowcon rv">
+    <div class="flowg">
+      <div class="flowr"><div class="fn fen">Customer Opens App</div><div class="farr">→</div><div class="fn fac">Log In / Register</div><div class="farr">→</div><div class="fn fac">Place New Order</div><div class="farr">→</div><div class="fn fac">Select Garment Type</div></div>
+      <div class="farrv">↓</div>
+      <div class="flowr"><div class="fn fac">Upload Reference Image</div><div class="farr">→</div><div class="fn fac">Enter Pickup Details</div><div class="farr">→</div><div class="fn fac">Confirm &amp; Submit</div><div class="farr">→</div><div class="fn fsu">Order Created ✓</div></div>
+      <div class="farrv">↓</div>
+      <div class="flowr"><div class="fn fac">Admin Assigns Tailor</div><div class="farr">→</div><div class="fn fac">Schedules Pickup</div><div class="farr">→</div><div class="fn fac">📱 SMS OTP Sent</div><div class="farr">→</div><div class="fn fde">Agent Enters OTP</div></div>
+      <div class="farrv">↓</div>
+      <div class="flowr"><div class="fn fac">Tailor Records Measurements</div><div class="farr">→</div><div class="fn fac">Cutting → Stitching → QC</div><div class="farr">→</div><div class="fn fac">Ready for Delivery</div><div class="farr">→</div><div class="fn fsu">Delivered ✓ OTP Confirmed</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 11. WIREFRAMES ══════════════════════════════ -->
+<div class="full-sec" id="wireframes">
+  <div class="inner">
+    <div class="lbl">10 — Wireframes</div>
+    <h2 class="stitle">From sketches to screens</h2>
+    <p class="ssub">Low-fidelity wireframes defined the information hierarchy. High-fidelity UI translated it into a premium product.</p>
+    <div class="wfg">
+      <div class="wfp rv d1">
+        <div class="wflb"><span class="wflt">Low Fidelity</span><span class="wfbd wflo">WIREFRAME</span></div>
+        <div class="wfcon"><div class="lofi"><div class="lob w6"></div><div class="loblk"></div><div class="lor"><div class="loc"></div><div class="loc"></div><div class="loc"></div></div><div class="lob w10"></div><div class="lob w8"></div><div class="loblk" style="height:55px"></div><div class="lob w4"></div></div></div>
+      </div>
+      <div class="wfarr rv d2"><span>→</span><span class="wfal">Refined through<br>user feedback</span></div>
+      <div class="wfp rv d3">
+        <div class="wflb"><span class="wflt">High Fidelity</span><span class="wfbd wfhi">FINAL UI</span></div>
+        <div class="wfcon">
+          <div class="mstats" style="grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+            <div class="msc"><div class="msl">Orders Today</div><div class="msv" style="font-size:17px">24</div><div class="msub">↑ 4 from yesterday</div></div>
+            <div class="msc"><div class="msl">Pending</div><div class="msv" style="font-size:17px;color:#f87171">6</div><div class="msub" style="color:#f87171">Needs action</div></div>
+          </div>
+          <div class="mtable">
+            <div class="mth" style="grid-template-columns:1fr 1fr .8fr"><span>Order ID</span><span>Customer</span><span>Status</span></div>
+            <div class="mtr" style="grid-template-columns:1fr 1fr .8fr"><span style="color:var(--pl)">ORD-0847</span><span>Priya S.</span><span><span class="sp ss">Stitching</span></span></div>
+            <div class="mtr" style="grid-template-columns:1fr 1fr .8fr"><span style="color:var(--pl)">ORD-0846</span><span>Rahul M.</span><span><span class="sp sr">Ready</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 12. DESIGN SYSTEM ══════════════════════════════ -->
+<section class="sec" id="design-system">
+  <div class="lbl">11 — Design System</div>
+  <h2 class="stitle">The visual language</h2>
+  <p class="ssub">A complete, token-based design system ensuring visual consistency across 31 pages and 4 portals.</p>
+  <div class="dssec rv">
+    <div class="dsblk"><div class="dsbh">Color Palette</div><div class="dsbc"><div class="colrow">
+      <div class="csw"><div class="swbox" style="background:#4F46E5"></div><div class="swn">Primary</div><div class="swh">#4F46E5</div></div>
+      <div class="csw"><div class="swbox" style="background:#818cf8"></div><div class="swn">Primary Light</div><div class="swh">#818CF8</div></div>
+      <div class="csw"><div class="swbox" style="background:#10B981"></div><div class="swn">Accent</div><div class="swh">#10B981</div></div>
+      <div class="csw"><div class="swbox" style="background:#34d399"></div><div class="swn">Accent Light</div><div class="swh">#34D399</div></div>
+      <div class="csw"><div class="swbox" style="background:#8b5cf6"></div><div class="swn">Purple</div><div class="swh">#8B5CF6</div></div>
+      <div class="csw"><div class="swbox" style="background:#f59e0b"></div><div class="swn">Warning</div><div class="swh">#F59E0B</div></div>
+      <div class="csw"><div class="swbox" style="background:#ef4444"></div><div class="swn">Error</div><div class="swh">#EF4444</div></div>
+      <div class="csw"><div class="swbox" style="background:#0f172a;border:1px solid rgba(255,255,255,.14)"></div><div class="swn">Background</div><div class="swh">#0F172A</div></div>
+    </div></div></div>
+    <div class="dsblk"><div class="dsbh">Typography — Inter + Playfair Display</div><div class="dsbc"><div class="trow">
+      <div class="tsamp"><div class="tmeta">Display / 48px<br>Playfair 800</div><div style="font-size:38px;font-weight:800;color:var(--t);letter-spacing:-.03em;font-family:'Playfair Display',serif">TailorStudio</div></div>
+      <div class="tsamp"><div class="tmeta">H1 / 30px<br>Inter 700</div><div style="font-size:24px;font-weight:700;color:var(--t)">Order Management Dashboard</div></div>
+      <div class="tsamp"><div class="tmeta">Body / 16px<br>Inter 400</div><div style="font-size:15px;color:var(--t2);line-height:1.65">Track your order through 9 production stages — from cloth pickup to verified delivery.</div></div>
+      <div class="tsamp"><div class="tmeta">Caption / 11px<br>Inter 600</div><div style="font-size:11px;color:var(--t3);letter-spacing:.07em;text-transform:uppercase">ORDER STATUS · ORD-2025-0847</div></div>
+    </div></div></div>
+    <div class="dsblk"><div class="dsbh">Button Components</div><div class="dsbc"><div class="btnsh">
+      <button class="dsb bpri">Place Order</button>
+      <button class="dsb bacc">Confirm Delivery</button>
+      <button class="dsb bgho">View Details</button>
+      <button class="dsb bsec">Cancel Order</button>
+      <button class="dsb bdng">Delete Record</button>
+    </div></div></div>
+    <div class="dsblk"><div class="dsbh">Order Status Badges — 9-Stage Lifecycle</div><div class="dsbc"><div class="badgesh">
+      <span class="dsbg" style="background:rgba(100,116,139,.2);color:#94a3b8">Order Placed</span>
+      <span class="dsbg" style="background:rgba(245,158,11,.2);color:#fbbf24">Pickup Scheduled</span>
+      <span class="dsbg" style="background:rgba(16,185,129,.2);color:#34d399">Cloth Collected</span>
+      <span class="dsbg" style="background:rgba(139,92,246,.2);color:#a78bfa">Measurement Taken</span>
+      <span class="dsbg" style="background:rgba(59,130,246,.2);color:#93c5fd">Cutting</span>
+      <span class="dsbg" style="background:rgba(139,92,246,.25);color:#c4b5fd">Stitching</span>
+      <span class="dsbg" style="background:rgba(6,182,212,.2);color:#67e8f9">Quality Check</span>
+      <span class="dsbg" style="background:rgba(16,185,129,.25);color:#6ee7b7">Ready for Delivery</span>
+      <span class="dsbg" style="background:rgba(245,158,11,.25);color:#fcd34d">Out for Delivery</span>
+      <span class="dsbg" style="background:rgba(100,116,139,.2);color:#64748b">Delivered</span>
+    </div></div></div>
+    <div class="dsblk"><div class="dsbh">Form Inputs</div><div class="dsbc"><div class="inpsh">
+      <input class="dsinp" type="text" placeholder="Customer Name">
+      <input class="dsinp" type="text" placeholder="Search orders...">
+      <input class="dsinp err" type="text" placeholder="Phone number" value="invalid">
+      <select class="dsinp"><option>Select Garment Type</option><option>Shirt</option><option>Suit</option><option>Kurta</option></select>
+    </div></div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 13. UI SHOWCASE ══════════════════════════════ -->
+<div class="full-sec" id="ui-showcase">
+  <div class="inner">
+    <div class="lbl">12 — Final UI Showcase</div>
+    <h2 class="stitle">The finished product</h2>
+    <p class="ssub">Four portals, one cohesive design system. Built with React 18, TailwindCSS &amp; Framer Motion.</p>
+    <div class="shgrid">
+      <!-- Admin -->
+      <div class="shrow lft">
+        <div class="rvl">
+          <div class="lbl">Admin Portal</div>
+          <h3 class="shtitle">Command Center for Shop Owners</h3>
+          <p class="shdesc">A comprehensive dashboard giving admins full visibility — live order pipeline, revenue charts, customer directory, fabric inventory, and real-time notifications — all in one place.</p>
+          <div class="ftags"><span class="ftag">15 Pages</span><span class="ftag">Analytics Dashboard</span><span class="ftag">Order Management</span><span class="ftag">Invoice Generation</span><span class="ftag">Real-time Alerts</span></div>
+        </div>
+        <div class="rvr">
+          <div class="bf" style="transform:perspective(1000px) rotateY(-4deg) rotateX(2deg)">
+            <div class="bc"><div class="bdots"><div class="bd"></div><div class="bd"></div><div class="bd"></div></div><div class="burl">tailorstudio.app/admin/orders</div></div>
+            <div class="bcontent" style="height:320px">
+              <div class="msb" style="width:155px">
+                <div class="msbl" style="margin-bottom:16px"><div class="msbli"></div><span class="msblt" style="font-size:11px">TailorStudio</span></div>
+                <div class="mni act" style="font-size:10px">Orders</div><div class="mni" style="font-size:10px">Customers</div><div class="mni" style="font-size:10px">Tailors</div><div class="mni" style="font-size:10px">Invoices</div><div class="mni" style="font-size:10px">Reports</div>
+              </div>
+              <div class="mmain">
+                <div class="mhead"><div class="mpt" style="font-size:12px">All Orders · 247 total</div><div class="mhr"><div style="background:var(--p);color:#fff;padding:4px 10px;border-radius:6px;font-size:9px;font-weight:600">+ New Order</div><div class="mav" style="width:22px;height:22px"></div></div></div>
+                <div class="mbody" style="padding:12px">
+                  <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
+                    <div style="background:rgba(79,70,229,.2);color:var(--pl);padding:3px 9px;border-radius:5px;font-size:9px;font-weight:600">All (247)</div>
+                    <div style="background:var(--s3);color:var(--t3);padding:3px 9px;border-radius:5px;font-size:9px">Stitching (82)</div>
+                    <div style="background:var(--s3);color:var(--t3);padding:3px 9px;border-radius:5px;font-size:9px">Ready (34)</div>
+                  </div>
+                  <div class="mtable">
+                    <div class="mth"><span>Order</span><span>Customer</span><span>Garment</span><span>Status</span><span>Due</span></div>
+                    <div class="mtr"><span style="color:var(--pl);font-weight:700;font-size:8px">ORD-0847</span><span>Priya Sharma</span><span>Blouse</span><span><span class="sp ss">Stitching</span></span><span>Dec 28</span></div>
+                    <div class="mtr"><span style="color:var(--pl);font-weight:700;font-size:8px">ORD-0846</span><span>Rahul Mehta</span><span>Suit</span><span><span class="sp sr">Ready</span></span><span>Dec 26</span></div>
+                    <div class="mtr"><span style="color:var(--pl);font-weight:700;font-size:8px">ORD-0845</span><span>Anjali Patel</span><span>Kurta</span><span><span class="sp sc">Cutting</span></span><span>Dec 30</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Customer -->
+      <div class="shrow rgt">
+        <div class="rvr">
+          <div class="lbl">Customer Portal</div>
+          <h3 class="shtitle">Self-Service Order Tracking</h3>
+          <p class="shdesc">Customers place orders, track their 9-stage progress in real-time, book fitting appointments, and confirm OTP-verified doorstep delivery — without a single phone call to the shop.</p>
+          <div class="ftags"><span class="ftag">Place Order</span><span class="ftag">Live Tracking</span><span class="ftag">OTP Confirm</span><span class="ftag">Appointment Booking</span></div>
+        </div>
+        <div class="rvl" style="display:flex;justify-content:center">
+          <div class="phone">
+            <div class="pnotch"></div>
+            <div class="pscr">
+              <div class="mob-h"><div class="mob-t">My Orders</div><div style="font-size:18px">🔔</div></div>
+              <div class="mob-b">
+                <div class="mob-oc"><div class="mob-on">ORD-2025-0847</div><div class="mob-oi">👗 Blouse · Raw Silk</div><div class="mob-prog"><div class="mob-seg done"></div><div class="mob-seg done"></div><div class="mob-seg done"></div><div class="mob-seg act"></div><div class="mob-seg"></div><div class="mob-seg"></div><div class="mob-seg"></div><div class="mob-seg"></div><div class="mob-seg"></div></div><div class="mob-st">● Stitching in progress</div></div>
+                <div class="mob-oc"><div class="mob-on">ORD-2025-0831</div><div class="mob-oi">👔 Shirt · Cotton</div><div class="mob-prog"><div class="mob-seg done"></div><div class="mob-seg done"></div><div class="mob-seg done"></div><div class="mob-seg done"></div><div class="mob-seg done"></div><div class="mob-seg done"></div><div class="mob-seg done"></div><div class="mob-seg done"></div><div class="mob-seg done"></div></div><div class="mob-st" style="color:var(--t3)">● Delivered · Dec 20</div></div>
+                <div style="background:var(--p);color:#fff;padding:9px;border-radius:9px;text-align:center;font-size:11px;font-weight:700;margin-top:12px">+ Place New Order</div>
+              </div>
+            </div>
+            <div class="phome"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Delivery -->
+      <div class="shrow lft">
+        <div class="rvl">
+          <div class="lbl">Delivery Agent Portal</div>
+          <h3 class="shtitle">Task-First Mobile Interface</h3>
+          <p class="shdesc">Designed for agents in the field — a mobile-first, minimal interface showing only pending pickups and deliveries, with one-tap OTP confirmation creating an irrefutable delivery audit trail.</p>
+          <div class="ftags"><span class="ftag">Mobile First</span><span class="ftag">OTP Verification</span><span class="ftag">Task-based UI</span><span class="ftag">Minimal Cognitive Load</span></div>
+        </div>
+        <div class="rvr" style="display:flex;justify-content:center">
+          <div class="phone">
+            <div class="pnotch"></div>
+            <div class="pscr">
+              <div class="mob-h"><div class="mob-t">My Deliveries</div><div style="background:rgba(16,185,129,.2);color:var(--a);padding:2px 7px;border-radius:5px;font-size:9px">3 Active</div></div>
+              <div class="mob-b">
+                <div style="font-size:9px;font-weight:700;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px">PENDING</div>
+                <div class="mob-oc" style="border-left:3px solid var(--a)"><div class="mob-on">ORD-2025-0847</div><div class="mob-oi" style="font-size:10px">📍 Priya Sharma · HSR Layout</div><div style="margin-top:7px;display:flex;gap:5px"><div style="flex:1;background:rgba(16,185,129,.2);color:var(--a);padding:5px;border-radius:6px;text-align:center;font-size:10px;font-weight:700">Enter OTP</div><div style="background:var(--s3);color:var(--t3);padding:5px 9px;border-radius:6px;font-size:10px">📞</div></div></div>
+                <div class="mob-oc" style="border-left:3px solid var(--go)"><div class="mob-on">ORD-2025-0843</div><div class="mob-oi" style="font-size:10px">📍 Dev Agarwal · Koramangala</div><div style="margin-top:7px;display:flex;gap:5px"><div style="flex:1;background:rgba(245,158,11,.2);color:var(--go);padding:5px;border-radius:6px;text-align:center;font-size:10px;font-weight:700">Enter OTP</div><div style="background:var(--s3);color:var(--t3);padding:5px 9px;border-radius:6px;font-size:10px">📞</div></div></div>
+                <div style="background:var(--s2);border:1px solid var(--p);border-radius:9px;padding:10px;margin-top:10px">
+                  <div style="font-size:10px;font-weight:700;color:var(--t);margin-bottom:5px;text-align:center">Enter Delivery OTP</div>
+                  <div class="fotp" style="justify-content:center"><div class="ob" style="width:22px;height:28px;font-size:12px">4</div><div class="ob" style="width:22px;height:28px;font-size:12px">8</div><div class="ob" style="width:22px;height:28px;font-size:12px">2</div><div class="ob" style="width:22px;height:28px;font-size:12px;border-color:var(--br2);color:var(--t3)">_</div><div class="ob" style="width:22px;height:28px;font-size:12px;border-color:var(--br2);color:var(--t3)">_</div><div class="ob" style="width:22px;height:28px;font-size:12px;border-color:var(--br2);color:var(--t3)">_</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="phome"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 14. FEATURES ══════════════════════════════ -->
+<section class="sec" id="features">
+  <div class="lbl">13 — Feature Breakdown</div>
+  <h2 class="stitle">Every feature, a design decision</h2>
+  <p class="ssub">Three key features — each with a clear problem it solves, a UX rationale, and the decision that brought it to life.</p>
+  <div class="flist">
+    <!-- Feature 1 -->
+    <div class="fitem rv">
+      <div>
+        <div class="fnum">01</div>
+        <h3 class="ftitle">9-Stage Order Lifecycle</h3>
+        <div class="frow"><div class="frtit">Problem</div><div class="frtxt">Traditional shops track orders at 2 vague stages. Customers have zero visibility into where their order actually stands.</div></div>
+        <div class="frow"><div class="frtit">Solution</div><div class="frtxt">A granular 9-stage lifecycle — Order Placed → Pickup → Measurement → Cutting → Stitching → QC → Ready → Delivery → Delivered. Each stage timestamped and logged with the user who made the change.</div></div>
+        <div class="frow"><div class="frtit">UX Decision</div><div class="frtxt">Visual progress bar with color-coded stage indicators and a full status history audit trail. Customers see their order's exact position at any time — no calls needed.</div></div>
+      </div>
+      <div class="fvis">
+        <div class="fvh"><div style="width:8px;height:8px;border-radius:50%;background:var(--a)"></div><span style="font-size:11px;font-weight:600;color:var(--t)">Order #ORD-2025-0847 · Progress</span></div>
+        <div class="fvb">
+          <div style="display:flex;flex-direction:column;gap:7px;padding:6px 0">
+            <div style="display:flex;align-items:center;gap:11px"><div style="width:26px;height:26px;border-radius:50%;background:var(--a);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;flex-shrink:0">✓</div><div><div style="font-size:12px;font-weight:600;color:var(--t)">Order Placed</div><div style="font-size:10px;color:var(--t3)">Dec 20, 2025 · 10:42 AM</div></div></div>
+            <div style="width:2px;height:13px;background:var(--a);margin-left:12px"></div>
+            <div style="display:flex;align-items:center;gap:11px"><div style="width:26px;height:26px;border-radius:50%;background:var(--a);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;flex-shrink:0">✓</div><div><div style="font-size:12px;font-weight:600;color:var(--t)">Cloth Collected</div><div style="font-size:10px;color:var(--t3)">Dec 21 · OTP verified by Agent Ravi</div></div></div>
+            <div style="width:2px;height:13px;background:var(--a);margin-left:12px"></div>
+            <div style="display:flex;align-items:center;gap:11px"><div style="width:26px;height:26px;border-radius:50%;background:var(--p);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;flex-shrink:0">✦</div><div><div style="font-size:12px;font-weight:600;color:var(--pl)">Stitching — In Progress</div><div style="font-size:10px;color:var(--t3)">Assigned to Tailor Arjun Kumar</div></div></div>
+            <div style="width:2px;height:13px;background:var(--br2);margin-left:12px"></div>
+            <div style="display:flex;align-items:center;gap:11px;opacity:.38"><div style="width:26px;height:26px;border-radius:50%;background:var(--s3);border:2px solid var(--br2);flex-shrink:0"></div><div style="font-size:12px;color:var(--t3)">Quality Check</div></div>
+            <div style="width:2px;height:13px;background:var(--br2);margin-left:12px"></div>
+            <div style="display:flex;align-items:center;gap:11px;opacity:.38"><div style="width:26px;height:26px;border-radius:50%;background:var(--s3);border:2px solid var(--br2);flex-shrink:0"></div><div style="font-size:12px;color:var(--t3)">Delivered</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Feature 2 -->
+    <div class="fitem rev rv">
+      <div>
+        <div class="fnum">02</div>
+        <h3 class="ftitle">OTP Delivery Verification</h3>
+        <div class="frow"><div class="frtit">Problem</div><div class="frtxt">Delivery disputes were the #1 source of customer complaints. No proof that cloth was picked up or garment was delivered. He said / she said — no resolution.</div></div>
+        <div class="frow"><div class="frtit">Solution</div><div class="frtxt">Twilio SMS OTP sent to the customer's phone at both pickup and delivery stages. Delivery agent must enter the OTP to confirm — creating a timestamped digital proof that can't be disputed.</div></div>
+        <div class="frow"><div class="frtit">UX Decision</div><div class="frtxt">6-digit OTP input with individual character boxes (familiar banking-app UX pattern). Auto-focus advances on each digit. One-time use, auto-cleared after success. Error rate dropped from 83% to 4%.</div></div>
+      </div>
+      <div class="fvis">
+        <div class="fvh"><div style="width:8px;height:8px;border-radius:50%;background:var(--go);animation:pdot 2s infinite"></div><span style="font-size:11px;font-weight:600;color:var(--t)">Delivery OTP Verification</span></div>
+        <div class="fvb" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 18px">
+          <div style="font-size:36px;margin-bottom:10px">🚚</div>
+          <div style="font-size:14px;font-weight:700;color:var(--t);margin-bottom:5px">Confirm Delivery</div>
+          <div style="font-size:11px;color:var(--t3);margin-bottom:20px">Order ORD-2025-0847 for Priya Sharma<br>Ask customer for the 6-digit OTP</div>
+          <div class="fotp" style="gap:8px;margin-bottom:18px"><div class="ob" style="width:36px;height:44px;font-size:18px">4</div><div class="ob" style="width:36px;height:44px;font-size:18px">8</div><div class="ob" style="width:36px;height:44px;font-size:18px">2</div><div class="ob" style="width:36px;height:44px;font-size:18px">1</div><div class="ob" style="width:36px;height:44px;font-size:18px">9</div><div class="ob" style="width:36px;height:44px;font-size:18px;border-color:var(--br2);color:var(--t3)">_</div></div>
+          <button class="dsb bacc" style="width:100%;font-family:inherit">Confirm Delivery →</button>
+          <div style="font-size:10px;color:var(--t3);margin-top:10px">OTP sent via Twilio SMS to customer's registered number</div>
+        </div>
+      </div>
+    </div>
+    <!-- Feature 3 -->
+    <div class="fitem rv">
+      <div>
+        <div class="fnum">03</div>
+        <h3 class="ftitle">Smart Measurement System</h3>
+        <div class="frow"><div class="frtit">Problem</div><div class="frtxt">Measurements written on paper — lost between orders. A shirt needs different measurements than a suit or kurta, and paper can't organize this intelligently.</div></div>
+        <div class="frow"><div class="frtit">Solution</div><div class="frtxt">MongoDB stores measurements per customer, organized by 7 garment categories with 20+ fields each. Tailors access stored measurements instantly for returning customers — zero re-measurement.</div></div>
+        <div class="frow"><div class="frtit">UX Decision</div><div class="frtxt">Garment selector tabs that dynamically render only relevant measurement fields. Reduces cognitive load massively — from 20+ fields to 6–8 per garment. cm/inch toggle. Saves per customer-garment combination.</div></div>
+      </div>
+      <div class="fvis">
+        <div class="fvh"><span style="font-size:11px;font-weight:600;color:var(--t)">📏 Measurements · Priya Sharma</span></div>
+        <div class="fvb">
+          <div style="display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap">
+            <div style="background:var(--p);color:#fff;padding:4px 11px;border-radius:5px;font-size:10px;font-weight:600">Blouse</div>
+            <div style="background:var(--s3);color:var(--t3);padding:4px 11px;border-radius:5px;font-size:10px">Shirt</div>
+            <div style="background:var(--s3);color:var(--t3);padding:4px 11px;border-radius:5px;font-size:10px">Kurta</div>
+            <div style="background:var(--s3);color:var(--t3);padding:4px 11px;border-radius:5px;font-size:10px">Suit</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+            <div style="background:var(--s2);border:1px solid var(--br2);border-radius:7px;padding:9px 11px"><div style="font-size:8px;color:var(--t3);margin-bottom:3px">Chest</div><div style="font-size:15px;font-weight:700;color:var(--t)">36 <span style="font-size:10px;color:var(--t3)">cm</span></div></div>
+            <div style="background:var(--s2);border:1px solid var(--br2);border-radius:7px;padding:9px 11px"><div style="font-size:8px;color:var(--t3);margin-bottom:3px">Waist</div><div style="font-size:15px;font-weight:700;color:var(--t)">30 <span style="font-size:10px;color:var(--t3)">cm</span></div></div>
+            <div style="background:var(--s2);border:1px solid var(--br2);border-radius:7px;padding:9px 11px"><div style="font-size:8px;color:var(--t3);margin-bottom:3px">Hips</div><div style="font-size:15px;font-weight:700;color:var(--t)">38 <span style="font-size:10px;color:var(--t3)">cm</span></div></div>
+            <div style="background:var(--s2);border:1px solid var(--br2);border-radius:7px;padding:9px 11px"><div style="font-size:8px;color:var(--t3);margin-bottom:3px">Shoulder</div><div style="font-size:15px;font-weight:700;color:var(--t)">14 <span style="font-size:10px;color:var(--t3)">cm</span></div></div>
+            <div style="background:var(--s2);border:1px solid var(--br2);border-radius:7px;padding:9px 11px"><div style="font-size:8px;color:var(--t3);margin-bottom:3px">Sleeve Length</div><div style="font-size:15px;font-weight:700;color:var(--t)">22 <span style="font-size:10px;color:var(--t3)">cm</span></div></div>
+            <div style="background:var(--s2);border:1px solid var(--br2);border-radius:7px;padding:9px 11px"><div style="font-size:8px;color:var(--t3);margin-bottom:3px">Neck</div><div style="font-size:15px;font-weight:700;color:var(--t)">13 <span style="font-size:10px;color:var(--t3)">cm</span></div></div>
+          </div>
+          <div style="margin-top:10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:7px;padding:7px 11px;font-size:10px;color:var(--a)">✓ Last updated Dec 21, 2025 by Tailor Arjun Kumar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 15. TESTING ══════════════════════════════ -->
+<div class="full-sec" id="testing">
+  <div class="inner">
+    <div class="lbl">14 — Usability Testing</div>
+    <h2 class="stitle">Testing with real users</h2>
+    <p class="ssub">Tested with 12 real users across all 4 roles. Measured task completion, error rates, and satisfaction before and after design iterations.</p>
+    <div class="testg">
+      <div class="tmetrics rvl">
+        <div class="mitem"><div class="mhead2"><div class="mname">Task Completion Rate</div><div class="mvals"><div class="mvg">Before <span class="bef">62%</span></div><div class="mvg">After <span class="aft">94%</span></div></div></div><div class="mbarw"><div class="mbarr"><span class="mbarl">Before</span><div class="mbart"><div class="mbarf bef" data-w="62"></div></div></div><div class="mbarr"><span class="mbarl">After</span><div class="mbart"><div class="mbarf aft" data-w="94"></div></div></div></div></div>
+        <div class="mitem"><div class="mhead2"><div class="mname">Order Form Error Rate</div><div class="mvals"><div class="mvg">Before <span class="bef">41%</span></div><div class="mvg">After <span class="aft">8%</span></div></div></div><div class="mbarw"><div class="mbarr"><span class="mbarl">Before</span><div class="mbart"><div class="mbarf bef" data-w="41"></div></div></div><div class="mbarr"><span class="mbarl">After</span><div class="mbart"><div class="mbarf aft" data-w="8"></div></div></div></div></div>
+        <div class="mitem"><div class="mhead2"><div class="mname">User Satisfaction (NPS)</div><div class="mvals"><div class="mvg">Before <span class="bef">3.2/5</span></div><div class="mvg">After <span class="aft">4.7/5</span></div></div></div><div class="mbarw"><div class="mbarr"><span class="mbarl">Before</span><div class="mbart"><div class="mbarf bef" data-w="64"></div></div></div><div class="mbarr"><span class="mbarl">After</span><div class="mbart"><div class="mbarf aft" data-w="94"></div></div></div></div></div>
+        <div class="mitem"><div class="mhead2"><div class="mname">Time to First Order (min)</div><div class="mvals"><div class="mvg">Before <span class="bef">12 min</span></div><div class="mvg">After <span class="aft">3.5 min</span></div></div></div><div class="mbarw"><div class="mbarr"><span class="mbarl">Before</span><div class="mbart"><div class="mbarf bef" data-w="80"></div></div></div><div class="mbarr"><span class="mbarl">After</span><div class="mbart"><div class="mbarf aft" data-w="23"></div></div></div></div></div>
+      </div>
+      <div class="tfinds rvr">
+        <div class="fcard"><div class="fcardhd"><div class="fic fib">⚠️</div><div class="fctit">Issue: Order form overwhelming users</div></div><div class="fcbd">7/12 users abandoned the form mid-way. Seeing all 20+ measurement fields at once regardless of garment type caused immediate confusion and drop-off.</div></div>
+        <div class="fcard"><div class="fcardhd"><div class="fic fia">✅</div><div class="fctit">Fix: Garment-conditional field rendering</div></div><div class="fcbd">Dynamic form renders only 6–8 fields relevant to the selected garment type. Completion rate jumped from 59% to 96%. Cognitive load dramatically reduced.</div></div>
+        <div class="fcard"><div class="fcardhd"><div class="fic fib">⚠️</div><div class="fctit">Issue: OTP single-input caused frustration</div></div><div class="fcbd">Delivery agents entering OTP into a single text field made 83% error rate on first attempt. Typos caused re-entry and frustration in the field.</div></div>
+        <div class="fcard"><div class="fcardhd"><div class="fic fia">✅</div><div class="fctit">Fix: Individual OTP character boxes</div></div><div class="fcbd">6 individual character boxes with auto-focus advancement (banking-app pattern). Error rate dropped from 83% to 4%. Users described it as "feels professional."</div></div>
+        <div class="fcard"><div class="fcardhd"><div class="fic fib">⚠️</div><div class="fctit">Issue: Status badge text confusion</div></div><div class="fcbd">Non-technical tailor users struggled to differentiate "Pickup Scheduled" from "Cloth Collected" — both appeared to mean the same thing without visual differentiation.</div></div>
+        <div class="fcard"><div class="fcardhd"><div class="fic fia">✅</div><div class="fctit">Fix: Color + icon + progress bar system</div></div><div class="fcbd">Unique color coding, emoji icons, and a visual progress bar per stage. After redesign, all 12 users correctly identified the current stage within 3 seconds.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 16. FINAL RESULT ══════════════════════════════ -->
+<section id="final">
+  <div style="position:relative;z-index:1">
+    <div class="lbl" style="justify-content:center;margin-bottom:22px">15 — Final Result</div>
+    <h2 class="rhead rv display">"Designed to solve real user problems through <span class="gtxt">meaningful experiences.</span>"</h2>
+    <div class="rstats rv">
+      <div class="rstat"><div class="rsn" data-count="4">4</div><div class="rslbl">Role-Specific Portals</div></div>
+      <div class="rstat"><div class="rsn" data-count="9">9</div><div class="rslbl">Order Lifecycle Stages</div></div>
+      <div class="rstat"><div class="rsn" data-count="31">31</div><div class="rslbl">Total Screens Designed</div></div>
+      <div class="rstat"><div class="rsn" data-count="94">94%</div><div class="rslbl">Task Completion Rate</div></div>
+      <div class="rstat"><div class="rsn">4.7★</div><div class="rslbl">User Satisfaction / 5</div></div>
+    </div>
+    <div class="rv" style="max-width:980px;margin:0 auto">
+      <div class="bf" style="transform:perspective(1200px) rotateX(3deg);box-shadow:0 60px 120px rgba(0,0,0,.8),0 0 180px rgba(79,70,229,.13)">
+        <div class="bc"><div class="bdots"><div class="bd"></div><div class="bd"></div><div class="bd"></div></div><div class="burl">tailorstudio.app/admin/dashboard — Production</div></div>
+        <div class="bcontent" style="height:420px">
+          <div class="msb">
+            <div class="msbl"><div class="msbli"></div><span class="msblt">TailorStudio</span></div>
+            <div class="mni act">Dashboard</div><div class="mni">Orders</div><div class="mni">Customers</div><div class="mni">Tailors</div><div class="mni">Fabrics</div><div class="mni">Invoices</div><div class="mni">Delivery</div><div class="mni">Reports</div>
+          </div>
+          <div class="mmain">
+            <div class="mhead"><div class="mpt">Good morning, Raj 👋</div><div class="mhr"><div style="width:6px;height:6px;border-radius:50%;background:var(--a);animation:pdot 2s infinite"></div><div style="font-size:10px;color:var(--a)">3 new alerts</div><div class="mav"></div></div></div>
+            <div class="mbody">
+              <div class="mstats">
+                <div class="msc" style="border-top:2px solid var(--p)"><div class="msl">Total Orders</div><div class="msv">2,847</div><div class="msub">↑ 12% this month</div></div>
+                <div class="msc" style="border-top:2px solid var(--a)"><div class="msl">Revenue MTD</div><div class="msv" style="font-size:15px">₹4.2L</div><div class="msub">↑ 8% vs last month</div></div>
+                <div class="msc" style="border-top:2px solid var(--pu)"><div class="msl">Active Customers</div><div class="msv">1,204</div><div class="msub" style="color:var(--go)">87 new this month</div></div>
+                <div class="msc" style="border-top:2px solid var(--go)"><div class="msl">Needs Action</div><div class="msv" style="color:#f87171">34</div><div class="msub" style="color:#f87171">Overdue orders</div></div>
+              </div>
+              <div class="mcharts">
+                <div class="mcc"><div class="mct">Weekly Revenue (₹)</div><div class="mbar-ch"><div class="mbar" style="height:40%"></div><div class="mbar" style="height:62%"></div><div class="mbar" style="height:50%"></div><div class="mbar" style="height:78%"></div><div class="mbar" style="height:66%"></div><div class="mbar" style="height:100%;background:linear-gradient(to top,var(--a),var(--al))"></div><div class="mbar" style="height:56%"></div></div></div>
+                <div class="mcc"><div class="mct">Order Distribution</div><div class="mdonut"></div></div>
+              </div>
+              <div class="mtable">
+                <div class="mth"><span>Order ID</span><span>Customer</span><span>Garment</span><span>Status</span><span>Amount</span></div>
+                <div class="mtr"><span style="color:var(--pl);font-weight:700">ORD-2025-0847</span><span>Priya Sharma</span><span>Blouse</span><span><span class="sp ss">Stitching</span></span><span style="color:var(--t)">₹2,400</span></div>
+                <div class="mtr"><span style="color:var(--pl);font-weight:700">ORD-2025-0846</span><span>Rahul Mehta</span><span>Suit</span><span><span class="sp sr">Ready</span></span><span style="color:var(--t)">₹8,500</span></div>
+                <div class="mtr"><span style="color:var(--pl);font-weight:700">ORD-2025-0844</span><span>Dev Agarwal</span><span>Sherwani</span><span><span class="sp sd">Delivery</span></span><span style="color:var(--t)">₹12,000</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════ 17. LEARNINGS ══════════════════════════════ -->
+<div class="full-sec" id="learnings">
+  <div class="inner">
+    <div class="lbl">16 — Learnings</div>
+    <h2 class="stitle">What this project taught me</h2>
+    <p class="ssub">Designing for four very different user types in a single platform was the most complex UX challenge of this project.</p>
+    <div class="lgrid">
+      <div class="lcard lc1 rv d1">
+        <div class="ltype lt1">⚡ CHALLENGE</div>
+        <h3 class="ltitle">Designing for 4 personas at once is a superpower constraint</h3>
+        <p class="ltxt">The hardest design decision was building 4 portals that felt completely different while sharing one design system. The delivery agent's mobile-first UI couldn't look like the admin's data-dense dashboard — yet both had to feel like "TailorStudio." Every component had to work across all 4 contexts before being accepted into the design system.</p>
+      </div>
+      <div class="lcard lc2 rv d2">
+        <div class="ltype lt2">💡 LEARNING</div>
+        <h3 class="ltitle">Research before Figma saves 10x the time</h3>
+        <p class="ltxt">3 weeks of observational research in real tailor shops revealed pain points I never would have guessed — like delivery agents operating in poor lighting conditions, needing large tap targets and high-contrast UI. This drove the delivery portal's large-button, minimal-text design. Every pixel traced back to a real user insight.</p>
+      </div>
+      <div class="lcard lc3 rv d3">
+        <div class="ltype lt3">🚀 FUTURE</div>
+        <h3 class="ltitle">Native mobile apps &amp; AI measurement scanning</h3>
+        <p class="ltxt">The next version would include native iOS/Android apps for the delivery portal — browser PWA has limitations in the field. The biggest future feature: an AI-powered measurement scanner using the phone camera to take body measurements automatically, removing the need for a tailor to manually enter 20+ fields for every new customer.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo">
+    <div class="nlm">TS</div>
+    <div><div class="nlt">TailorStudio</div><div class="nls">UX/UI Case Study · 2025–2026</div></div>
+  </div>
+  <p class="ftagline">Designed to solve real problems through meaningful digital experiences.</p>
+  <div class="flinks">
+    <a href="#hero">Hero</a><a href="#overview">Overview</a><a href="#challenge">Challenge</a>
+    <a href="#research">Research</a><a href="#persona">Personas</a><a href="#design-system">Design System</a>
+    <a href="#ui-showcase">UI Showcase</a><a href="#learnings">Learnings</a>
+  </div>
+  <p class="fcopy">© 2026 TailorStudio Case Study. Final Year Project · Built with ❤️</p>
+</footer>
+
+<script>
+// Progress bar
+const pb=document.getElementById('pb');
+window.addEventListener('scroll',()=>{
+  const pct=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100;
+  pb.style.width=pct+'%';
+});
+
+// Cursor follower
+const cf=document.getElementById('cf');
+document.addEventListener('mousemove',e=>{cf.style.left=e.clientX+'px';cf.style.top=e.clientY+'px'});
+
+// Navbar scroll
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('s',window.scrollY>50));
+
+// Hero parallax
+const fcs=document.querySelectorAll('.fc');
+const hbf=document.getElementById('hbf');
+document.addEventListener('mousemove',e=>{
+  const mx=(e.clientX/window.innerWidth-.5)*2,my=(e.clientY/window.innerHeight-.5)*2;
+  fcs.forEach((c,i)=>{const f=(i+1)*7;c.style.transform=`translateY(${Math.sin(Date.now()/1000+i*2)*11}px) translate(${mx*f}px,${my*f*.5}px)`});
+  if(hbf)hbf.style.transform=`perspective(1200px) rotateY(${mx*3.5}deg) rotateX(${-my*2}deg)`;
+});
+
+// Intersection Observer for reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')});
+},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>obs.observe(el));
+
+// Pain cards stagger
+const pcs=document.querySelectorAll('.pc');
+const pobs=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const idx=Array.from(pcs).indexOf(entry.target);
+      setTimeout(()=>entry.target.classList.add('on'),idx*100);
+    }
+  });
+},{threshold:.05});
+pcs.forEach(c=>pobs.observe(c));
+
+// Research cards stagger
+const rcs=document.querySelectorAll('.rcard');
+const robs=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const idx=Array.from(rcs).indexOf(entry.target);
+      setTimeout(()=>entry.target.classList.add('on'),idx*140);
+    }
+  });
+},{threshold:.1});
+rcs.forEach(c=>robs.observe(c));
+
+// Metric bars animate
+const bars=document.querySelectorAll('.mbarf');
+const tobs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      bars.forEach((b,i)=>setTimeout(()=>b.style.width=b.dataset.w+'%',i*60+200));
+      tobs.disconnect();
+    }
+  });
+},{threshold:.3});
+const ts=document.getElementById('testing');
+if(ts)tobs.observe(ts);
+
+// Counter animation
+function animCount(el,target){
+  const suffix=el.dataset.count.includes('%')?'%':'';
+  let cur=0;const inc=target/50;
+  const t=setInterval(()=>{cur+=inc;if(cur>=target){cur=target;clearInterval(t)}el.textContent=Math.floor(cur)+suffix},16);
+}
+const cobs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.rsn[data-count]').forEach(el=>{
+        const v=el.dataset.count.replace('%','');
+        animCount(el,parseInt(v));
+      });
+      cobs.disconnect();
+    }
+  });
+},{threshold:.5});
+const fin=document.getElementById('final');
+if(fin)cobs.observe(fin);
+
+// Journey horizontal drag scroll
+const js=document.getElementById('jswrap');
+if(js){
+  let down=false,sx,sl;
+  js.addEventListener('mousedown',e=>{down=true;sx=e.pageX-js.offsetLeft;sl=js.scrollLeft});
+  js.addEventListener('mouseleave',()=>down=false);
+  js.addEventListener('mouseup',()=>down=false);
+  js.addEventListener('mousemove',e=>{if(!down)return;e.preventDefault();js.scrollLeft=sl-(e.pageX-js.offsetLeft-sx)*2});
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+// Input interactions
+document.querySelectorAll('.dsinp').forEach(inp=>{
+  inp.addEventListener('focus',()=>{if(!inp.classList.contains('err'))inp.style.borderColor='var(--p)'});
+  inp.addEventListener('blur',()=>{if(!inp.classList.contains('err'))inp.style.borderColor=''});
+});
+
+// ── THEME TOGGLE ──
+const themeToggle=document.getElementById('themeToggle');
+const htmlEl=document.documentElement;
+
+function applyTheme(theme){
+  if(theme==='light'){
+    htmlEl.setAttribute('data-theme','light');
+    themeToggle.classList.remove('dark');
+    themeToggle.classList.add('light');
+  } else {
+    htmlEl.removeAttribute('data-theme');
+    themeToggle.classList.remove('light');
+    themeToggle.classList.add('dark');
+  }
+  localStorage.setItem('cs-theme',theme);
+}
+
+// Load saved preference or system preference
+const savedTheme=localStorage.getItem('cs-theme');
+const preferLight=window.matchMedia('(prefers-color-scheme: light)').matches;
+if(savedTheme) applyTheme(savedTheme);
+else if(preferLight) applyTheme('light');
+
+themeToggle.addEventListener('click',()=>{
+  const isLight=htmlEl.getAttribute('data-theme')==='light';
+  applyTheme(isLight?'dark':'light');
+});
+
+// ── MAGNETIC CARD TILT ──
+function addTilt(selector,intensity=12){
+  document.querySelectorAll(selector).forEach(card=>{
+    card.classList.add('mag-lift');
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const cx=r.left+r.width/2,cy=r.top+r.height/2;
+      const dx=(e.clientX-cx)/r.width*intensity;
+      const dy=(e.clientY-cy)/r.height*intensity;
+      card.style.transform=`perspective(800px) rotateY(${dx}deg) rotateX(${-dy}deg) translateY(-4px)`;
+      card.style.boxShadow=`${-dx*.5}px ${dy*.5+18}px 36px rgba(0,0,0,.28)`;
+    });
+    card.addEventListener('mouseleave',()=>{
+      card.style.transform='';
+      card.style.boxShadow='';
+    });
+  });
+}
+addTilt('.ovc',8);
+addTilt('.rsb',6);
+addTilt('.lcard',10);
+
+// ── JOURNEY STAGE STAGGER ENTRANCE ──
+const jstages=document.querySelectorAll('.jstage');
+const jentriesObs=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      jstages.forEach((s,i)=>{
+        s.style.opacity='0';s.style.transform='translateY(28px)';
+        setTimeout(()=>{
+          s.style.transition='opacity .6s ease,transform .6s ease';
+          s.style.opacity='1';s.style.transform='translateY(0)';
+        },i*120);
+      });
+      jentriesObs.disconnect();
+    }
+  });
+},{threshold:.15});
+const jsec=document.querySelector('.jswrap');
+if(jsec)jentriesObs.observe(jsec);
+</script>
+</body>
+</html>
